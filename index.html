@@ -250,138 +250,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/30/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="chitanda">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="chitanda's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/09/30/hello-world/" itemprop="url">Hello World</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-30T13:09:05+08:00">
-                2019-09-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/26/Delaunay三角剖分构造Voronoi图/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -459,8 +327,7 @@
 <li>该平面图的任意一个面都是三角面。</li>
 <li>$CH(V)$ 的边都在 $E$ 中</li>
 </ul>
-<p>##Delaunay 三角剖分</p>
-<p>对于一个三角剖分 $T$ ，若对于其中任意一个三角面，其外接圆内部不包含除三角面端点外 $V$ 中其他点，则称之为 Delaunay 三角剖分，简称 $DT$ 。下文中我们所说的三角剖分都指 Delaunay 三角剖分。</p>
+<h2 id="Delaunay-三角剖分"><a href="#Delaunay-三角剖分" class="headerlink" title="Delaunay 三角剖分"></a>Delaunay 三角剖分</h2><p>对于一个三角剖分 $T$ ，若对于其中任意一个三角面，其外接圆内部不包含除三角面端点外 $V$ 中其他点，则称之为 Delaunay 三角剖分，简称 $DT$ 。下文中我们所说的三角剖分都指 Delaunay 三角剖分。</p>
 <h2 id="分治法求-DT"><a href="#分治法求-DT" class="headerlink" title="分治法求 DT"></a>分治法求 DT</h2><p>考虑若有两个点集 $V_1$ 和 $V_2$ ，满足 $V_1$ 的凸包 $CH_1$ 和 $V_2$ 的凸包 $CH_2$ 没有交点，设分别在左侧和右侧，若我们已经得到了它们的三角剖分 $DT_1$ 和 $DT_2$ ，我们应该怎样求出点集 $V=V_1\cup V_2$ 的三角剖分 $DT$ ？</p>
 <p>首先找到 $CH_1$ 和 $CH_2$ 的下公切线，这显然是 $V$ 的凸包 $CH$ 中的一条边，所以它必然在 $DT$ 中，找的方法很简单，任选一个 $V_1$ 中的点 $P_1$ 和 $V_2$ 中的点 $P_2$ ，枚举 $DT_1$ 中与 $P_1$ 中相连的点，若在 $P_1P_2$ 的右侧则更新 $P_1$ ，$P_2$ 同理。这样复杂度是线性的。</p>
 <p>然后我们需要从下往上慢慢加边，设当前的 $Base$ 边所连的左右两个点是 $P_1$ 和 $P_2$ ，$Base$ 边初始是上面求的公切线。我们需要找到 $P_1$ 和 $P_2$ 所连的点中，在 $P_1P_2$ 上方（即向量左侧）且与 $P_1,P_2$ 的外接圆不包含其他点的那个点。</p>
@@ -469,32 +336,23 @@
 <p>我们将所有点排序，用分治的思想来不断合并 $DT$ ，总复杂度为 $O(n\log n)$。</p>
 <h2 id="代码解读"><a href="#代码解读" class="headerlink" title="代码解读"></a>代码解读</h2><p>首先要说明一下存边的方式，由于有删边操作，所以最好用链表来维护。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Edge</span>&#123;</span></span><br><span class="line">	<span class="keyword">int</span> v, id;</span><br><span class="line">	<span class="built_in">list</span>&lt;Edge&gt;::iterator mate;</span><br><span class="line">	Edge(<span class="keyword">int</span> v = <span class="number">0</span>) : v(v) &#123; id = <span class="number">-1</span>; &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">list</span>&lt;Edge&gt; E[maxn];</span><br></pre></td></tr></table></figure>
-
 <p>其中 <code>mate</code> 指向这条边的另一半。</p>
 <p>连边操作为：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addEdge</span><span class="params">(<span class="keyword">int</span> u, <span class="keyword">int</span> v)</span></span>&#123;</span><br><span class="line">	E[u].push_front(v);</span><br><span class="line">	E[v].push_front(u);</span><br><span class="line">	E[u].begin()-&gt;mate = E[v].begin();</span><br><span class="line">	E[v].begin()-&gt;mate = E[u].begin();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>分治主体：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">work</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> r)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(l + <span class="number">1</span> &gt;= r)&#123;</span><br><span class="line">		<span class="keyword">if</span>(l + <span class="number">1</span> == r) addEdge(l, r);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> mid = (l + r) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">	work(l, mid);</span><br><span class="line">	work(mid + <span class="number">1</span>, r);</span><br></pre></td></tr></table></figure>
-
 <p>找两个凸包的下公切线：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> flag = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> i = l, j = r;</span><br><span class="line"><span class="keyword">while</span>(!flag)&#123;</span><br><span class="line">	flag = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> it = E[i].begin(); it != E[i].end(); ++it)&#123;</span><br><span class="line">		<span class="keyword">int</span> tmp = OnLeft(P[j], P[i], P[it-&gt;v]);</span><br><span class="line">		<span class="keyword">if</span>(tmp &gt; <span class="number">0</span> || (tmp == <span class="number">0</span> &amp;&amp; (P[i] - P[j]).len() &gt; (P[it-&gt;v] - P[j]).len()))&#123;</span><br><span class="line">			flag = <span class="number">0</span>;</span><br><span class="line">			i = it-&gt;v;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> it = E[j].begin(); it != E[j].end(); ++it)&#123;</span><br><span class="line">		<span class="keyword">int</span> tmp = OnLeft(P[i], P[j], P[it-&gt;v]);</span><br><span class="line">		<span class="keyword">if</span>(tmp &lt; <span class="number">0</span> || (tmp == <span class="number">0</span> &amp;&amp; (P[j] - P[i]).len() &gt; (P[it-&gt;v] - P[i]).len()))&#123;</span><br><span class="line">			flag = <span class="number">0</span>;</span><br><span class="line">			j = it-&gt;v;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>连边和删边：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">	addEdge(i, j);</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">		<span class="keyword">int</span> best = <span class="number">-1</span>, dir = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">auto</span> it = E[i].begin(); it != E[i].end(); ++it)&#123;</span><br><span class="line">			<span class="keyword">if</span>(OnLeft(P[i], P[j], P[it-&gt;v]) &gt; <span class="number">0</span> &amp;&amp; (!dir || InCircle(P[i], P[j], P[best], P[it-&gt;v])))</span><br><span class="line">				best = it-&gt;v, dir = <span class="number">-1</span>;			</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">auto</span> it = E[j].begin(); it != E[j].end(); ++it)&#123;</span><br><span class="line">			<span class="keyword">if</span>(OnLeft(P[i], P[j], P[it-&gt;v]) &gt; <span class="number">0</span> &amp;&amp; (!dir || InCircle(P[i], P[j], P[best], P[it-&gt;v])))</span><br><span class="line">				best = it-&gt;v, dir = <span class="number">1</span>;			</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(!dir) <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">if</span>(dir == <span class="number">-1</span>)&#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">auto</span> it = E[i].begin(); it != E[i].end(); )</span><br><span class="line">				<span class="keyword">if</span>(SegmentProperIntersection(P[i], P[it-&gt;v], P[j], P[best]))&#123;</span><br><span class="line">					<span class="keyword">auto</span> _it = it; ++it;</span><br><span class="line">					E[_it-&gt;v].erase(_it-&gt;mate);</span><br><span class="line">					E[i].erase(_it);</span><br><span class="line">				&#125;<span class="keyword">else</span> ++it;</span><br><span class="line">			i = best;</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">auto</span> it = E[j].begin(); it != E[j].end(); )</span><br><span class="line">				<span class="keyword">if</span>(SegmentProperIntersection(P[i], P[best], P[j], P[it-&gt;v]))&#123;</span><br><span class="line">					<span class="keyword">auto</span> _it = it; ++it;</span><br><span class="line">					E[_it-&gt;v].erase(_it-&gt;mate);</span><br><span class="line">					E[j].erase(_it);</span><br><span class="line">				&#125;<span class="keyword">else</span> ++it;</span><br><span class="line">			j = best;</span><br><span class="line">		&#125;</span><br><span class="line">		addEdge(i, j);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>接下来是一些计算几何部分细节的说明。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> eps = <span class="number">1e-10</span>;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">dcmp</span><span class="params">(<span class="keyword">double</span> x)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> (x &gt; eps) - (x &lt; -eps);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Point</span>&#123;</span></span><br><span class="line">	<span class="keyword">double</span> x, y;</span><br><span class="line">	Point(<span class="keyword">double</span> x = <span class="number">0</span>, <span class="keyword">double</span> y = <span class="number">0</span>)	: x(x), y(y) &#123;&#125;</span><br><span class="line">	<span class="keyword">bool</span> <span class="keyword">operator</span> &lt; (<span class="keyword">const</span> Point&amp; R) <span class="keyword">const</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> dcmp(x - R.x) == <span class="number">0</span> ? dcmp(y - R.y) &lt; <span class="number">0</span> : dcmp(x - R.x) &lt; <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">bool</span> <span class="keyword">operator</span> == (<span class="keyword">const</span> Point&amp; R) <span class="keyword">const</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> dcmp(x - R.x) == <span class="number">0</span> &amp;&amp; dcmp(y - R.y) == <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	Point <span class="keyword">operator</span> + (<span class="keyword">const</span> Point&amp; R) <span class="keyword">const</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> Point(x + R.x , y + R.y);</span><br><span class="line">	&#125;</span><br><span class="line">	Point <span class="keyword">operator</span> - (<span class="keyword">const</span> Point&amp; R) <span class="keyword">const</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> Point(x - R.x , y - R.y);</span><br><span class="line">	&#125;</span><br><span class="line">	Point <span class="keyword">operator</span> * (<span class="keyword">const</span> <span class="keyword">double</span>&amp; R) <span class="keyword">const</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> Point(x * R , y * R);</span><br><span class="line">	&#125;</span><br><span class="line">	Point <span class="keyword">operator</span> / (<span class="keyword">const</span> <span class="keyword">double</span>&amp; R) <span class="keyword">const</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> Point(x / R , y / R);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">double</span> <span class="keyword">operator</span> ^ (<span class="keyword">const</span> Point&amp; R) <span class="keyword">const</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> x * R.y - y * R.x;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">double</span> <span class="keyword">operator</span> % (<span class="keyword">const</span> Point&amp; R) <span class="keyword">const</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> x * R.x + y * R.y;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">double</span> <span class="title">len</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">sqrt</span>(*<span class="keyword">this</span> % *<span class="keyword">this</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">double</span> <span class="title">angle</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">atan2</span>(y, x);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">output</span><span class="params">()</span> </span>&#123; <span class="built_in">printf</span>(<span class="string">"%.10f %.10f\n"</span>, x, y); &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
 <p> <code>OnLeft</code> 用来判断点 $C$ 在 $AB$ 的哪一侧</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">OnLeft</span><span class="params">(Point A, Point B, Point C)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> dcmp((B - A) ^ (C - A));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p><code>InCircle</code> 判断点 $P$ 是否在 $ABC$ 外接圆严格内部</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">det3</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; p)</span></span>&#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> p(x, y) p[(x) * 3 + y]</span></span><br><span class="line">	<span class="keyword">return</span> p(<span class="number">0</span>, <span class="number">0</span>) * p(<span class="number">1</span>, <span class="number">1</span>) * p(<span class="number">2</span>, <span class="number">2</span>) + p(<span class="number">0</span>, <span class="number">1</span>) * p(<span class="number">1</span>, <span class="number">2</span>) * p(<span class="number">2</span>, <span class="number">0</span>) + p(<span class="number">0</span>, <span class="number">2</span>) * p(<span class="number">1</span>, <span class="number">0</span>) * p(<span class="number">2</span>, <span class="number">1</span>)</span><br><span class="line">		- p(<span class="number">0</span>, <span class="number">2</span>) * p(<span class="number">1</span>, <span class="number">1</span>) * p(<span class="number">2</span>, <span class="number">0</span>) - p(<span class="number">0</span>, <span class="number">1</span>) * p(<span class="number">1</span>, <span class="number">0</span>) * p(<span class="number">2</span>, <span class="number">2</span>) - p(<span class="number">0</span>, <span class="number">0</span>) * p(<span class="number">1</span>, <span class="number">2</span>) * p(<span class="number">2</span>, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Point <span class="title">GetCircleCenter</span><span class="params">(Point A, Point B, Point C)</span></span>&#123;</span><br><span class="line">	<span class="keyword">auto</span> met1 = <span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt;&#123;A % A, A.y, <span class="number">1.</span>, B % B, B.y, <span class="number">1.</span>, C % C, C.y, <span class="number">1.</span>&#125;;</span><br><span class="line">	<span class="keyword">auto</span> met2 = <span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt;&#123;A.x, A % A, <span class="number">1.</span>, B.x, B % B, <span class="number">1.</span>, C.x, C % C, <span class="number">1.</span>&#125;;</span><br><span class="line">	<span class="keyword">auto</span> met3 = <span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt;&#123;A.x, A.y, <span class="number">1.</span>, B.x, B.y, <span class="number">1.</span>, C.x, C.y, <span class="number">1.</span>&#125;;</span><br><span class="line">	<span class="keyword">double</span> tmp = det3(met3) * <span class="number">2</span>;</span><br><span class="line">	<span class="keyword">return</span> Point(det3(met1) / tmp, det3(met2) / tmp);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">InCircle</span><span class="params">(Point A, Point B, Point C, Point P)</span></span>&#123;</span><br><span class="line">	Point O = GetCircleCenter(A, B, C);</span><br><span class="line">	<span class="keyword">return</span> dcmp((A - O).len() - (P - O).len()) &gt; <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p><code>SegmentProperIntersection</code> 判断线段严格相交</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">SegmentProperIntersection</span><span class="params">(Point a1 , Point a2 , Point b1 , Point b2)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">double</span> c1 = (a2 - a1) ^ (b1 - a1);</span><br><span class="line">	<span class="keyword">double</span> c2 = (a2 - a1) ^ (b2 - a1);</span><br><span class="line">	<span class="keyword">if</span>(dcmp(c1) == <span class="number">0</span> &amp;&amp; dcmp(c2) == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">double</span> c3 = (b2 - b1) ^ (a1 - b1);</span><br><span class="line">	<span class="keyword">double</span> c4 = (b2 - b1) ^ (a2 - b1);</span><br><span class="line">	<span class="keyword">return</span> dcmp(c1) * dcmp(c2) &lt; <span class="number">0</span> &amp;&amp; dcmp(c3) * dcmp(c4) &lt; <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>想好怎么实现之后，代码写起来其实并不复杂，整个过程也没有太多的细节。</p>
 <p>在求出 $DT$ 之后，对偶一下即可得到维诺图（Voronoi Diagram）。若想得到每个三角面，使用最左转线法即可，具体可参考平面图转对偶图，在求维诺图的过程中也需要用到。</p>
 
@@ -752,7 +610,7 @@
         
           
             <p>题目链接：<a href="https://projecteuler.net/problem=459" target="_blank" rel="noopener">Project Euler 459</a></p>
-<p>这是 PE 上一个难度为 $100%$ 的题，但实际上只要你对博弈论有一定的了解，这道题并不是那么难。</p>
+<p>这是 PE 上一个难度为 $100\%$ 的题，但实际上只要你对博弈论有一定的了解，这道题并不是那么难。</p>
 <blockquote>
 <p>$N\times N$ 的黑白棋盘，初始全白，两人游戏，将棋盘变全黑的人胜利，每次操作可以将这样的一个子矩阵内棋子全部翻白：</p>
 <ol>
@@ -769,8 +627,6 @@
 <p>我们设两个一维游戏分别为：</p>
 <blockquote>
 <p>游戏一：一个 $1\times N$ 的黑白棋盘，每次选择一段区间翻转，必须满足区间最右为白棋，且区间长度为平方数。</p>
-</blockquote>
-<blockquote>
 <p>游戏二：一个 $1\times N$ 的黑白棋盘，每次选择一段区间翻转，必须满足区间最右为白棋，且区间长度为三角形数。</p>
 </blockquote>
 <p>显然，我们可以用 $O(n\sqrt{n})$ 的复杂度暴力求出两个游戏中每个位置的白棋的 $sg$ 值，分别设为 $sg_1$ 和 $sg_2$ 。</p>
@@ -859,7 +715,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1085,6 +941,28 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
 
   
 
