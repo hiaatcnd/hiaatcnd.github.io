@@ -83,11 +83,11 @@
 <meta name="keywords" content="Project Euler,Game Theory">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Project Euler 459">
-<meta property="og:url" content="https://www.chitanda.moe/2018/02/02/Project-Euler-459/index.html">
+<meta property="og:url" content="http://www.chitanda.moe/2018/02/02/Project-Euler-459/index.html">
 <meta property="og:site_name" content="chitanda&#39;s blog">
 <meta property="og:description" content="题目链接：Project Euler 459 这是 PE 上一个难度为 $100\%$ 的题，但实际上只要你对博弈论有一定的了解，这道题并不是那么难。  $N\times N$ 的黑白棋盘，初始全白，两人游戏，将棋盘变全黑的人胜利，每次操作可以将这样的一个子矩阵内棋子全部翻白：  子矩阵右上角是白棋  子矩阵长度是平方数 $(1,4,9,\dots)$  子矩阵宽度是三角形数 $(1,3,6,10">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-02T06:09:51.081Z">
+<meta property="og:updated_time" content="2019-11-02T08:29:38.366Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Project Euler 459">
 <meta name="twitter:description" content="题目链接：Project Euler 459 这是 PE 上一个难度为 $100\%$ 的题，但实际上只要你对博弈论有一定的了解，这道题并不是那么难。  $N\times N$ 的黑白棋盘，初始全白，两人游戏，将棋盘变全黑的人胜利，每次操作可以将这样的一个子矩阵内棋子全部翻白：  子矩阵右上角是白棋  子矩阵长度是平方数 $(1,4,9,\dots)$  子矩阵宽度是三角形数 $(1,3,6,10">
@@ -120,7 +120,7 @@
 
 
 
-  <link rel="canonical" href="https://www.chitanda.moe/2018/02/02/Project-Euler-459/">
+  <link rel="canonical" href="http://www.chitanda.moe/2018/02/02/Project-Euler-459/">
 
 
 
@@ -301,7 +301,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.chitanda.moe/2018/02/02/Project-Euler-459/">
+    <link itemprop="mainEntityOfPage" href="http://www.chitanda.moe/2018/02/02/Project-Euler-459/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="chitanda">
@@ -383,6 +383,7 @@
 <p>对于 $N=10^6$ 问先手第一步有多少种获胜的决策</p>
 </blockquote>
 <p>这是个二维的棋盘游戏，实际上是两个一维游戏的组合，利用 $\text{tartan}$ 定理，我们可以通过计算两个一维情况的 $sg$ 值的 $\text{nim}$ 积来快速得到二维情况的 $sg$ 值。</p>
+<a id="more"></a>
 <p>我们设两个一维游戏分别为：</p>
 <blockquote>
 <p>游戏一：一个 $1\times N$ 的黑白棋盘，每次选择一段区间翻转，必须满足区间最右为白棋，且区间长度为平方数。</p>

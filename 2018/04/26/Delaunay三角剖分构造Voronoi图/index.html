@@ -83,11 +83,11 @@
 <meta name="keywords" content="Geometry">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Delaunay 三角剖分">
-<meta property="og:url" content="https://www.chitanda.moe/2018/04/26/Delaunay三角剖分构造Voronoi图/index.html">
+<meta property="og:url" content="http://www.chitanda.moe/2018/04/26/Delaunay三角剖分构造Voronoi图/index.html">
 <meta property="og:site_name" content="chitanda&#39;s blog">
 <meta property="og:description" content="三角剖分对于二维平面上一个点集 $V$ ，设其凸包为 $CH(V)$ ，构造一个边集 $E$ ，那么点集 $V$ 的三角剖分 $T(V)=G=(V,E)$满足以下条件：  是一个平面图，即除了端点，所有边之间没有其他交点。 该平面图的任意一个面都是三角面。 $CH(V)$ 的边都在 $E$ 中  Delaunay 三角剖分对于一个三角剖分 $T$ ，若对于其中任意一个三角面，其外接圆内部不包含除三">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-09-30T06:44:42.402Z">
+<meta property="og:updated_time" content="2019-11-02T08:29:01.567Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Delaunay 三角剖分">
 <meta name="twitter:description" content="三角剖分对于二维平面上一个点集 $V$ ，设其凸包为 $CH(V)$ ，构造一个边集 $E$ ，那么点集 $V$ 的三角剖分 $T(V)=G=(V,E)$满足以下条件：  是一个平面图，即除了端点，所有边之间没有其他交点。 该平面图的任意一个面都是三角面。 $CH(V)$ 的边都在 $E$ 中  Delaunay 三角剖分对于一个三角剖分 $T$ ，若对于其中任意一个三角面，其外接圆内部不包含除三">
@@ -120,7 +120,7 @@
 
 
 
-  <link rel="canonical" href="https://www.chitanda.moe/2018/04/26/Delaunay三角剖分构造Voronoi图/">
+  <link rel="canonical" href="http://www.chitanda.moe/2018/04/26/Delaunay三角剖分构造Voronoi图/">
 
 
 
@@ -301,7 +301,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.chitanda.moe/2018/04/26/Delaunay三角剖分构造Voronoi图/">
+    <link itemprop="mainEntityOfPage" href="http://www.chitanda.moe/2018/04/26/Delaunay三角剖分构造Voronoi图/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="chitanda">
@@ -375,6 +375,7 @@
 <li>$CH(V)$ 的边都在 $E$ 中</li>
 </ul>
 <h2 id="Delaunay-三角剖分"><a href="#Delaunay-三角剖分" class="headerlink" title="Delaunay 三角剖分"></a>Delaunay 三角剖分</h2><p>对于一个三角剖分 $T$ ，若对于其中任意一个三角面，其外接圆内部不包含除三角面端点外 $V$ 中其他点，则称之为 Delaunay 三角剖分，简称 $DT$ 。下文中我们所说的三角剖分都指 Delaunay 三角剖分。</p>
+<a id="more"></a>
 <h2 id="分治法求-DT"><a href="#分治法求-DT" class="headerlink" title="分治法求 DT"></a>分治法求 DT</h2><p>考虑若有两个点集 $V_1$ 和 $V_2$ ，满足 $V_1$ 的凸包 $CH_1$ 和 $V_2$ 的凸包 $CH_2$ 没有交点，设分别在左侧和右侧，若我们已经得到了它们的三角剖分 $DT_1$ 和 $DT_2$ ，我们应该怎样求出点集 $V=V_1\cup V_2$ 的三角剖分 $DT$ ？</p>
 <p>首先找到 $CH_1$ 和 $CH_2$ 的下公切线，这显然是 $V$ 的凸包 $CH$ 中的一条边，所以它必然在 $DT$ 中，找的方法很简单，任选一个 $V_1$ 中的点 $P_1$ 和 $V_2$ 中的点 $P_2$ ，枚举 $DT_1$ 中与 $P_1$ 中相连的点，若在 $P_1P_2$ 的右侧则更新 $P_1$ ，$P_2$ 同理。这样复杂度是线性的。</p>
 <p>然后我们需要从下往上慢慢加边，设当前的 $Base$ 边所连的左右两个点是 $P_1$ 和 $P_2$ ，$Base$ 边初始是上面求的公切线。我们需要找到 $P_1$ 和 $P_2$ 所连的点中，在 $P_1P_2$ 上方（即向量左侧）且与 $P_1,P_2$ 的外接圆不包含其他点的那个点。</p>
