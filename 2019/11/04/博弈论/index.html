@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="chitanda&#39;s blog">
 <meta property="og:description" content="可能会长期更新，想总结下我所学习到的一些算法竞赛中的博弈论知识，以下内容也仅针对这个，不会涉及传统的博弈论。在此之前，可以先了解一下组合游戏的定义。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-11-04T15:54:41.781Z">
+<meta property="og:updated_time" content="2019-11-04T15:57:47.583Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="博弈论">
 <meta name="twitter:description" content="可能会长期更新，想总结下我所学习到的一些算法竞赛中的博弈论知识，以下内容也仅针对这个，不会涉及传统的博弈论。在此之前，可以先了解一下组合游戏的定义。">
@@ -344,6 +344,16 @@
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/11/04/博弈论/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/11/04/博弈论/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -408,7 +418,7 @@
 </li>
 </ul>
 </li>
-<li><p>当前是必胜态，设当前状态是 $(x,y)$ ，$x$ 必然是某个必败态 $(a_i,b_i)$ 中的一个值：</p>
+<li><p>当前是必胜态，设当前状态是 $(x,y)​$ ，$x​$ 必然是某个必败态 $(a_i,b_i)​$ 中的一个值：</p>
 <ul>
 <li>$x=a_i$ ，那么若 $y&gt;b_i$ ，从第二堆中取 $y-b_i$ 个即可，若 $y&lt;b_i$ ，从两堆中同时取 $x-a[y-x]$ ，状态变为 $(a[y-x],a[y-x]+y-x)$ ，显然为必败态。（注意，此时 $y-x\lt i$ ，所以 $a[y-x]$ 必然是小于 $a_i$ 的）</li>
 <li><p>$x=b_i$ ，显然 $y\gt a_i$ ，从第二堆中取 $y-a_i$ 个即可 。</p>
@@ -486,6 +496,9 @@
 
           
 
+  
+    <div class="comments" id="comments">
+    </div>
   
 
 
@@ -763,6 +776,28 @@
 
 
 
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'R1oXB3H3fuBdOim5r17oSvrk-gzGzoHsz',
+        appKey: 'Fy44Vr8nflccguqMkcoI9QW0',
+        placeholder: 'ヾﾉ≧∀≦)o来啊，快活啊!',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
 
 
 
