@@ -113,7 +113,7 @@
 <meta property="og:site_name" content="chitanda&#39;s blog">
 <meta property="og:description" content="三个经典博弈有三个经典的博弈论问题，分别是巴什博弈（Bash Game）、威佐夫博弈（Wythoff Game）和尼姆博弈（Nimm Game），从这三个问题入手，可以对博弈论有一个初步的了解。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-11-05T09:57:23.154Z">
+<meta property="og:updated_time" content="2019-11-08T12:42:43.829Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="三个经典博弈">
 <meta name="twitter:description" content="三个经典博弈有三个经典的博弈论问题，分别是巴什博弈（Bash Game）、威佐夫博弈（Wythoff Game）和尼姆博弈（Nimm Game），从这三个问题入手，可以对博弈论有一个初步的了解。">
@@ -466,8 +466,14 @@
 <p>回顾巴什博弈，我们定义了一个计算当前游戏状态 $S$ 的值的函数 $f(S)$ ，而现在可以正式介绍 $\text{SG}$ 函数了。</p>
 <p>$\text{SG}$ 函数是 $\text{Sprague-Grundy}$ 函数的简称，类似的，一个 $\text{SG}$ 函数 $sg(S)$ 也是用来计算当前游戏状态 $S$ 的值，但相比于 $f(S)$ ，它直接规定了计算方法：$sg(S)=\text{mex}\{sg(S’)|S \rightarrow S’\}$ ，其中 $S\rightarrow S’$ 表示状态 $S$ 能到达 $S’$ ，$\text{mex}$ 是 minimum excludant 的简称，即第一个未出现的非负整数。显然，对于结束状态，它不能到达任何其他状态，因此其 $sg$ 值必然为 $0$ ，进一步思考可以发现必胜状态的 $sg$ 值必然大于 $0$ ，必败状态的 $sg$ 值必然等于 $0$ 。总而言之，一个状态能到达任何 $sg$ 值小于它的状态，不能到达任何 $sg$ 值等于它的状态。</p>
 <p>回到尼姆博弈，我们将状态 $S$ 定义为 $\{a_1,a_2,\dots,a_n\}$ ，当 $n=1$ 时，可以发现 $sg(\{a_1\})=a_1$ ，但当 $n&gt;1$ 时呢？显然我们可以通过定义来暴力计算，但这样效率很低，有没有更加高效便捷的办法？答案是 $\text{SG}$ 定理。</p>
-<p>游戏和的 $\text{SG}$ 函数等于各个游戏 $\text{SG}$ 函数的 $\text{nim}$ 和，而 $\text{nim}$ 和，即异或和。证明如下：</p>
-<p>不失一般性的，考虑两个游戏的和的 $\text{SG}$ 函数 $sg(S)$ ，$S$ 由两个游戏的状态 $S_a$ 和 $S_b​$ 组成，并且分别设两个游戏的 $\text{SG}$ 函数为 $sg_a(S_a)$ 和 $sg_b(S_b)$ ，那么要证明 $sg(S)=sg_a(S_a)\oplus sg_b(S_b)$ 是对的（这里 $\oplus$ 即代表 $\text{nim}$ 和），只需证明那句“一个状态能到达任何 $sg$ 值小于它的状态，不能到达任何 $sg$ 值等于它的状态”，即满足了 $\text{SG}​$ 的定义。</p>
+<p>形式化的，定义 $n$ 个游戏 $G_1,G_2,\dots ,G_n$ 的和 $G(V,E)=G_1+G_2+\dots +G_n$ 为：</p>
+<ol>
+<li>$V=V_1\times V_2\times \dots \times V_n$ ，这里的 $\times$ 代表的是笛卡尔积。</li>
+<li>$E=\{(x,y)|x=(x_1,x_2,\dots,x_n),y=(y_1,y_2,\dots,y_n),(x_k,y_k)\in E_k,1\le k\le n,y_i=x_i,\forall i\neq k\}$ 。</li>
+</ol>
+<p>解释一下，$V$ 点集代表游戏的状态集合，$E$ 有向边集代表游戏的状态转移， 对于游戏的和 $G$ 的转移，即选择一个子游戏 $k$ 进行状态转移，而其他子游戏状态保持不变。</p>
+<p>游戏和的 $\text{SG}​$ 函数等于各个游戏 $\text{SG}​$ 函数的 $\text{nim}​$ 和，而 $\text{nim}​$ 和，即异或和。证明如下：</p>
+<p>不失一般性的，考虑两个游戏的和的 $\text{SG}$ 函数 $sg(S)$ ，$S$ 由两个游戏的状态 $S_a$ 和 $S_b$ 组成，并且分别设两个游戏的 $\text{SG}$ 函数为 $sg_a(S_a)$ 和 $sg_b(S_b)$ ，那么要证明 $sg(S)=sg_a(S_a)\oplus sg_b(S_b)$ 是对的（这里 $\oplus$ 即代表 $\text{nim}$ 和），只需证明那句“一个状态能到达任何 $sg$ 值小于它的状态，不能到达任何 $sg$ 值等于它的状态”，即满足了 $\text{SG}$ 的定义。</p>
 <ol>
 <li>不能到达任何 $sg$ 值等于它的状态 ，由于每次操作只可能改变一个游戏的状态，根据异或操作的性质，无论如何都不可能让后续状态的 $sg$ 值保持不变 。即 $\forall S’ \in \{S’|S\rightarrow S’\}$  ，都有 $sg(S’)\neq sg(S)$ 。</li>
 <li>能到达任何 $sg$ 值小于它的状态 ，假设 $sg_a(S_a)=a$ ，$sg_b(S_b)=b$ ，令 $c=a\oplus b$ ，$\forall v\lt c$ ，令 $t=v\oplus c$ ，设 $t$ 在二进制下最高位为第 $k$ 位，那么 $a$ 和 $b$ 中必然存在一个数第 $k$ 位为 $1$ ，假设这个数是 $a$ ，令 $a’=t\oplus a$ ，那么有 $a’\oplus b=t\oplus a\oplus b=v\oplus c\oplus c=v$ ，而显然 $a’$ 一定是小于 $a$ 的，根据定义，$\exists S_a’\in\{S_a’|S_a\rightarrow S_a’\}$ 满足 $sg_a(S_a’)=a’$ 。所以 $\exists S’\in\{S’|S\rightarrow S’\} $ 满足 $sg(S’)=v$ 。</li>
@@ -518,6 +524,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/11/08/从-nim-和到-nim-积/" rel="prev" title="从 nim 和到 nim 积">
+                从 nim 和到 nim 积 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -599,7 +609,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
