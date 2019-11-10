@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link referrerpolicy="no-referrer" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Game Theory,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="HackenbushHackenbush 是由数学家 John Horton Conway 发明的一个双人游戏，他在组合博弈等领域颇有成果， 是组合博弈论的开创者之一，后面要讲到的 surreal number 也是他所定义和构造的。Hackenbush 有一条称之为 “ground” 的线（或者将其看作点，称之为根，这并没有什么区别）和一些端点，以及若干条线段，每条线段连接两个端点或者一个端点和">
+<meta name="keywords" content="Game Theory">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackenbush">
+<meta property="og:url" content="http://www.chitanda.moe/2019/11/09/Hackenbush/index.html">
+<meta property="og:site_name" content="chitanda&#39;s blog">
+<meta property="og:description" content="HackenbushHackenbush 是由数学家 John Horton Conway 发明的一个双人游戏，他在组合博弈等领域颇有成果， 是组合博弈论的开创者之一，后面要讲到的 surreal number 也是他所定义和构造的。Hackenbush 有一条称之为 “ground” 的线（或者将其看作点，称之为根，这并没有什么区别）和一些端点，以及若干条线段，每条线段连接两个端点或者一个端点和">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.chitanda.moe/uploads/hackenbush0.png">
+<meta property="og:image" content="http://www.chitanda.moe/uploads/hackenbush1.png">
+<meta property="og:image" content="http://www.chitanda.moe/uploads/hackenbush2.png">
+<meta property="og:image" content="http://www.chitanda.moe/uploads/hackenbush3.png">
+<meta property="og:updated_time" content="2019-11-10T09:12:44.537Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hackenbush">
+<meta name="twitter:description" content="HackenbushHackenbush 是由数学家 John Horton Conway 发明的一个双人游戏，他在组合博弈等领域颇有成果， 是组合博弈论的开创者之一，后面要讲到的 surreal number 也是他所定义和构造的。Hackenbush 有一条称之为 “ground” 的线（或者将其看作点，称之为根，这并没有什么区别）和一些端点，以及若干条线段，每条线段连接两个端点或者一个端点和">
+<meta name="twitter:image" content="http://www.chitanda.moe/uploads/hackenbush0.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '9DY0ZVLOEK',
+      apiKey: 'cceb124574a128f58b19be198ddaf1cd',
+      indexName: 'chitandablog',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.chitanda.moe/2019/11/09/Hackenbush/">
+
+
+
+
+
+  <title>Hackenbush | chitanda's blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?cc5080b5a8e7b76ad7babd2be384450e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">chitanda's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">吃蛋挞的咸鱼博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.chitanda.moe/2019/11/09/Hackenbush/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="chitanda">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chitanda's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Hackenbush</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-09T16:32:01+08:00">
+                2019-11-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/11/09/Hackenbush/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/11/09/Hackenbush/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Hackenbush"><a href="#Hackenbush" class="headerlink" title="Hackenbush"></a>Hackenbush</h1><p>Hackenbush 是由数学家 John Horton Conway 发明的一个双人游戏，他在组合博弈等领域颇有成果， 是组合博弈论的开创者之一，后面要讲到的 surreal number 也是他所定义和构造的。Hackenbush 有一条称之为 “ground” 的线（或者将其看作点，称之为根，这并没有什么区别）和一些端点，以及若干条线段，每条线段连接两个端点或者一个端点和 ground 线，并且每条线段都和 ground 连通。两个玩家轮流操作，每次选择一条线段删除，同时将那些和 ground 不再连通的线段也一并删除，不能操作的玩家失败。</p>
+<p>在最初版本的 Hackenbush 中，每个玩家都可以删除任意一条线段，但在后来，又发明出了每条线段可以被配置成只能其中一个玩家删除的版本。一般来说，有三种版本：</p>
+<ul>
+<li><em>Original Hackenbush</em>: 或者称之为 <em>Green Hackenbush</em>，只有绿色的边，即最初版本。</li>
+<li><em>Blue-Red Hackenbush</em>: 蓝色的边只能由玩家一删除，红色的边只能由玩家二删除。</li>
+<li><em>Blue-Red-Green Hackenbush</em>: 最复杂的版本。</li>
+</ul>
+<p>而每种版本，也都还有着链、树和图三种不同复杂性的区别。</p>
+<p>接下来，我将分别介绍这三种版本，并尽量给出易懂的过程证明。</p>
+<a id="more"></a>
+<h2 id="Green-Hackenbush"><a href="#Green-Hackenbush" class="headerlink" title="Green Hackenbush"></a>Green Hackenbush</h2><p>Green Hackenbush 属于平等博弈，因此也是通过 SG 定理来解决的，让我们一步步分析。</p>
+<h3 id="链"><a href="#链" class="headerlink" title="链"></a>链</h3><p>这种情况也叫 bamboo stalks，由若干条链组成，这实际上就等价于尼姆博弈了，不再赘述。</p>
+<h3 id="树"><a href="#树" class="headerlink" title="树"></a>树</h3><p>如何计算一棵树的 $sg$ 值是问题的关键。</p>
+<p>Thomas S. Ferguson 的 “GAME THEORY” 中介绍了解决的方法。</p>
+<blockquote>
+<p><strong><em>Colon Principle</em></strong>:  When branches come together at a vertex, one may replace the branches by a non-branching stalk of length equal to their nim sum.</p>
+</blockquote>
+<p>翻译一下，就是当不同的分支在一个节点交汇时，可以用一条长为他们 $\text{nim}$ 和的链来代替他们。实际上，这条原理对于图的情况也是适用的，不过要求不同分支之间没有其他交点。</p>
+<p>证明：考虑一个任意一个 Hackenbush 所描述的图 $G$ ，选择 $G$ 中任意一个点 $x$ ，让 $H_1$ 和 $H_2$ 是任意拥有相同 $sg$ 值的图，令 $G_1=G_x:H_1$ ，$G_2=G_x:H_2$ ，其中 $G_x:H_i$ 表示将 $H_i$ 连在 $G$ 的点 $x$ 上（即 $H_i$ 原本连向 ground 的边改为连向 $x$ ）。那么，$G_1$ 和 $G_2$ 应该拥有同样的 $sg$ 值 ，$G_1+G_2$ 的 $sg$ 值为 $0$ ，为先手必败态：如果先手在 $G_i$ 中原本为 $G$ 的部分删除一条边，那么后手只需在另一个图中复制该操作，如果先手在 $H_i$ 中操作，改变了原本 $H_i$ 的 $sg$ 值，那么后手也能有办法将 $H_{3-i}$ 的 $sg$ 值变成一样的。当 $H_1$ 是一条长为 $sg$ 值的链时，这意味着，$H_2$ 能被长为其 $sg$ 值的链所替代。</p>
+<p><img src="/uploads/hackenbush0.png" alt="树"></p>
+<h3 id="图"><a href="#图" class="headerlink" title="图"></a>图</h3><p>图的情况的复杂性在于它可以有环。</p>
+<blockquote>
+<p><strong><em>Fusion Principle</em></strong>: The vertices on any circuit may be fused without changing the Sprague-Grundy value of the graph.</p>
+</blockquote>
+<p>也就是说，我们可以将环上任意两个点合并。而所有环上的点合并后，环上的一条边就变成了一条自环，而一条自环可以用一条边连着一个新点来代替。比如：</p>
+<p><img src="/uploads/hackenbush1.png" alt></p>
+<p>证明：我们称合并后 $sg$ 值不变的图是好的，改变了的图是坏的。假如存在坏的图，那么选择一个边数最少（假设为 $m$ ）并且拥有最少点数（这里，我们将 ground 当成一个点）的坏图，删除它的任意一条边都会使其变成好图，任何一次合并操作都会改变它的 $sg$ 值。那么有以下推论：</p>
+<ol>
+<li>$G$ 中不存在一对点 $x,y$ 之间有三条或以上不相交的简单路径。否则，将合并 $x,y$ 后的 $G$ 称之为 $H$ ，$H$ 和 $G$ 的 $sg$ 值不同，所以 $G+H$ 必然是先手必胜的。所以当先手删除了 $G$ 或 $H$ 中的一条边使得 $sg$ 变成 $0$ ，后手也在另一个图中删除了相应的那条边，使两个图变成拥有 $m-1$ 条边的图 $G’$ 和 $H’$ ，此时 $G’+H’$ 也是先手必胜，并且它们都是好的，然而，由于 $x$ 和 $y$ 之间存在三条不相交的路径，无论在 $G$ 中如何删除，都会使得 $x$ 和 $y$ 仍然在一个环上，此时在 $G’$ 中合并 $x$ 和 $y$ ，就会变成 $H’$ ，这与 $G’+H’$ 是先手必胜相矛盾。</li>
+<li>$G$ 中的环都必须包含 ground 这个点。假设 $G$ 中存在不包含 ground 的环 $C$ ，那么设 $G’$ 为 $G$ 删除所有 $C$ 中的边后的图（其他在删除后未与 ground 相连的部分也一并删去了），那么 $G’$ 只剩下 $C$ 中的一个点，如果剩下两个或以上，违背上一条推论（两个点通过 $C$ 有两条路径相连，通过 $G’$ 也有一条路径相连）。所以，$C$ 以及其他一并删去的部分与 $G’$ 之间仅通过一个点相连，通过 Colon Principle，我们可以将删去的部分（设为 $C’$ ，显然他们是好的，可以合并）变成一条长为其 $sg$ 值的链与 $G’$ 相连构成一个 $G’’$，和原本的图 $G$ 的 $sg$ 值相等，也就是说，$G$ 在一系列包括合并 $C$ 的变换后形成的 $G’’$ 与 $G$ 的 $sg$ 相同，这显然矛盾了。</li>
+<li>$G$ 中只有一个环包含 ground，即，$G$ 中只包含一个环。如果存在两个或以上，他们的交点必须只有 ground，否则与推论 1 矛盾，这种情况下，将其分成几个图，各自都是好的，这与假设矛盾。</li>
+</ol>
+<p>基于以上几个推论，最小的坏的图只可能是一个包含 ground 的环，环上的点再挂一些树，而基于 Colon Principle，树都能被链替换。如果仍将 ground 看成线，那么这样的图将呈现出“桥”的形状，如下图所示，因此我们也将这个环称之为桥。接下来，我们要证明这样的 $G$ 是好的。</p>
+<p>当 $m$ 为偶数时，如图，设右边为合并了桥后的图 $G’$ ，如果证明了 $G+G’$ 的 $sg$ 值为 0，就可以证明 $G$ 是好的。如果先手删除一个图的非桥边，后手只需删除另一个图对应的边即可。如果先手删除了一条桥上的边，变成了树的情况，将使剩下的边数变为奇数，$sg$ 值也肯定是奇数（仔细想想，这其实很显然），必然不为 $0$ ，因此后手必胜。</p>
+<p><img src="/uploads/hackenbush2.png" alt></p>
+<p>当 $m$ 为奇数时，如图，证明 $G+G’$ 的 $sg$ 值为 $0$ 即可。删链上边和桥上边的情况同理，只需考虑先手删除的是单独的那条边。考虑如果 $G$ 桥上某个点挂的链是奇数长度，设为 $2a+1$ ，那么删除它末端的边将其变成偶数长度，由于该图边数少于 $G$，它是个好图，可以合并，而合并后，其他的链抵消，总的 $sg$ 值显然为 $2a\oplus (2a+1)\oplus 1=0$ ，其中的 $1$ 是合并奇数长度桥所产生的。因此，只需考虑所有的链都是偶数长度的情况。</p>
+<p><img src="/uploads/hackenbush3.png" alt></p>
+<p>将所有桥上边黑白染色，使得桥中间的边为白色，相邻边不同色，那么白边数量为奇数，黑边数量为偶数。如果删除一条白色的边，将桥分割为两棵树，每棵树的 $sg$ 值都是这样的形式：</p>
+<script type="math/tex; mode=display">
+2a+1\oplus 2b+1\oplus 2c+1\oplus 2d+1\oplus \dots</script><p>这里，我们假定 $+$ 和 $\oplus$ 拥有同样的运算优先级，因此上面的式子是从左往右依次运算的。注意到，奇数次出现的 $+1$ 都和 $\oplus 1$ 等效（因为，前面运算的结果都是偶数），因此，也可以将上式写成：</p>
+<script type="math/tex; mode=display">
+\begin{aligned} 
+res&=2a\oplus1\oplus 2b+1\oplus 2c\oplus 1\oplus 2d+1\oplus \dots \\
+&=2a\oplus2b\oplus1+1\oplus 2c\oplus 2d\oplus 1+1\oplus  \dots\\
+&=2a\oplus2b+1+1\oplus 2c\oplus 2d+1+1\oplus  \dots\\
+&=2a\oplus2b+2\oplus 2c\oplus 2d+2\oplus  \dots
+\end{aligned}</script><p>若桥上边数模 $4$ 余 $1$ ，删除一条白边后两棵树剩余的桥边都为偶数，那么 $res$ 的值为偶数，而将其除二后，为 $a\oplus b+1\oplus c\oplus d+1\oplus \dots$ 。这等价于，将原图中链长度减半并合并所有黑边，称之为减半后的图 $\frac{G}{2}$，再删除那条白边形成的树所计算出的 $sg$ 值。若桥上边数模 $4$ 余 $3$ ，则 $res$ 是 $\frac{G}{2}$ 删除这条边后树的 $sg$ 值的两倍再 $+1$ 。</p>
+<p>除非桥边数为 $1$ ，这种情况显然 $G$ 是好的，否则 $\frac{G}{2}$ 边数必然小于 $G$ ，它应该是好的，且桥上边数为奇数，所以，$\frac{G}{2}+(\frac{G}{2})’$ 的 $sg$ 为 $0$ ，如果先手删除单独那条边，剩余的 $sg$ 为 $1$ ，也就是说，后手无论如何都存在删除 $\frac{G}{2}$ 中的一条边的必胜策略。若后手的必胜策略是删桥边，在 $G$ 中删除对应的一条白边，那么显然，形成的两棵树的 $sg$ 值在原图和减半图中是两倍关系或者两倍加一关系，因此总的 $sg$ 值也是两倍关系，都为 $0$ （思考下，若 $a\oplus b\oplus c=0$ ，那么 $(2a+1)\oplus (2b+1)\oplus 2c=(2a\oplus 1)\oplus (2b\oplus 1)\oplus 2c=0$）。若删除的是链上的边，那么，让 $G$ 对应的链仍保持 $\frac{G}{2}$ 这条链的两倍，显然，这之后的图是好的，且通过合并可以知道总的 $sg$ 值仍是两倍关系。因此，$G+G’$ 为先手必败，其 $sg$ 值为 $0$ 。</p>
+<p>综上所述，我们通过反证法证明了不存在坏的图，所有的图都是可合并的。</p>
+<h2 id="Blue-Red-Hackenbush"><a href="#Blue-Red-Hackenbush" class="headerlink" title="Blue-Red Hackenbush"></a>Blue-Red Hackenbush</h2><p>待更</p>
+<h2 id="Blue-Red-Green-Hackenbush"><a href="#Blue-Red-Green-Hackenbush" class="headerlink" title="Blue-Red-Green Hackenbush"></a>Blue-Red-Green Hackenbush</h2><p>待更</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://en.wikipedia.org/wiki/Hackenbush" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Hackenbush</a></li>
+<li><a href="https://en.wikipedia.org/wiki/John_Horton_Conway" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/John_Horton_Conway</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Surreal_number" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Surreal_number</a></li>
+<li><a href="/uploads/comb.pdf">Game Theory</a>, Thomas S. Ferguson</li>
+<li><a href="/uploads/hackenbush.pdf">A Short Guide to Hackenbush</a>, Padraic Bartlett</li>
+<li><a href="http://people.math.sc.edu/lu/teaching/2017spring_576/note4.pdf" target="_blank" rel="noopener">http://people.math.sc.edu/lu/teaching/2017spring_576/note4.pdf</a></li>
+<li><a href="http://www.cs.cmu.edu/afs/cs/academic/class/15859-f01/www/notes/hack.html" target="_blank" rel="noopener">http://www.cs.cmu.edu/afs/cs/academic/class/15859-f01/www/notes/hack.html</a></li>
+<li>Winning ways for your mathematical plays, Elwyn R. Berlekamp, John H. Conway, Richard K. Guy</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Game-Theory/" rel="tag"># Game Theory</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/08/从-nim-和到-nim-积/" rel="next" title="从 nim 和到 nim 积">
+                <i class="fa fa-chevron-left"></i> 从 nim 和到 nim 积
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="chitanda">
+            
+              <p class="site-author-name" itemprop="name">chitanda</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/hiaatcnd" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:immortalhx2@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Hackenbush"><span class="nav-number">1.</span> <span class="nav-text">Hackenbush</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Green-Hackenbush"><span class="nav-number">1.1.</span> <span class="nav-text">Green Hackenbush</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#链"><span class="nav-number">1.1.1.</span> <span class="nav-text">链</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#树"><span class="nav-number">1.1.2.</span> <span class="nav-text">树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图"><span class="nav-number">1.1.3.</span> <span class="nav-text">图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Blue-Red-Hackenbush"><span class="nav-number">1.2.</span> <span class="nav-text">Blue-Red Hackenbush</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Blue-Red-Green-Hackenbush"><span class="nav-number">1.3.</span> <span class="nav-text">Blue-Red-Green Hackenbush</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">1.4.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">chitanda</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'R1oXB3H3fuBdOim5r17oSvrk-gzGzoHsz',
+        appKey: 'Fy44Vr8nflccguqMkcoI9QW0',
+        placeholder: 'ヾﾉ≧∀≦)o来啊，快活啊!',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
