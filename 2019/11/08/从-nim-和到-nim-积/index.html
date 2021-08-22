@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hiaatcnd.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"9DY0ZVLOEK","apiKey":"cceb124574a128f58b19be198ddaf1cd","indexName":"chitandablog","hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="nim 和 在三个经典博弈中，我们介绍了 \(\text{nim}\) 和，即异或和，一般用符号 \(\oplus\) 来表示这种操作。接下来，将介绍几种翻硬币游戏。以下内容大部分是我高中时从一篇博客中看到的，但好像找不到原博文了，放了个内容差不多的博客链接在下面，如果想了解更多可以看博客。  \(n\) 枚硬币排成一排，有的正面朝上，有的反面朝上，将其从左至右按 \(1\) 到 \(n\)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从 nim 和到 nim 积">
+<meta property="og:url" content="https://hiaatcnd.github.io/2019/11/08/%E4%BB%8E-nim-%E5%92%8C%E5%88%B0-nim-%E7%A7%AF/index.html">
+<meta property="og:site_name" content="chitanda&#39;s blog">
+<meta property="og:description" content="nim 和 在三个经典博弈中，我们介绍了 \(\text{nim}\) 和，即异或和，一般用符号 \(\oplus\) 来表示这种操作。接下来，将介绍几种翻硬币游戏。以下内容大部分是我高中时从一篇博客中看到的，但好像找不到原博文了，放了个内容差不多的博客链接在下面，如果想了解更多可以看博客。  \(n\) 枚硬币排成一排，有的正面朝上，有的反面朝上，将其从左至右按 \(1\) 到 \(n\)">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-11-08T07:41:20.000Z">
+<meta property="article:modified_time" content="2020-01-11T10:56:18.787Z">
+<meta property="article:author" content="chitanda">
+<meta property="article:tag" content="Game Theory">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://hiaatcnd.github.io/2019/11/08/%E4%BB%8E-nim-%E5%92%8C%E5%88%B0-nim-%E7%A7%AF/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>从 nim 和到 nim 积 | chitanda's blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?cc5080b5a8e7b76ad7babd2be384450e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chitanda's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">吃蛋挞的咸鱼博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hiaatcnd.github.io/2019/11/08/%E4%BB%8E-nim-%E5%92%8C%E5%88%B0-nim-%E7%A7%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="chitanda">
+      <meta itemprop="description" content="随缘写，待更就是咕了">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chitanda's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          从 nim 和到 nim 积
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-08 15:41:20" itemprop="dateCreated datePublished" datetime="2019-11-08T15:41:20+08:00">2019-11-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-01-11 18:56:18" itemprop="dateModified" datetime="2020-01-11T18:56:18+08:00">2020-01-11</time>
+              </span>
+
+          
+            <span id="/2019/11/08/%E4%BB%8E-nim-%E5%92%8C%E5%88%B0-nim-%E7%A7%AF/" class="post-meta-item leancloud_visitors" data-flag-title="从 nim 和到 nim 积" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/11/08/%E4%BB%8E-nim-%E5%92%8C%E5%88%B0-nim-%E7%A7%AF/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/11/08/%E4%BB%8E-nim-%E5%92%8C%E5%88%B0-nim-%E7%A7%AF/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="nim-和">nim 和</h2>
+<p>在<a href="/2019/11/05/三个经典博弈/">三个经典博弈</a>中，我们介绍了 <span class="math inline">\(\text{nim}\)</span> 和，即异或和，一般用符号 <span class="math inline">\(\oplus\)</span> 来表示这种操作。接下来，将介绍几种翻硬币游戏。以下内容大部分是我高中时从一篇博客中看到的，但好像找不到原博文了，放了个内容差不多的博客链接在下面，如果想了解更多可以看博客。</p>
+<blockquote>
+<p><span class="math inline">\(n\)</span> 枚硬币排成一排，有的正面朝上，有的反面朝上，将其从左至右按 <span class="math inline">\(1\)</span> 到 <span class="math inline">\(n\)</span> 编号。A 和 B 轮流翻硬币，每次翻动时，所翻的编号最大的硬币必须是从正面翻到反面，除此之外，还必须满足某种约束条件。不能翻者输。</p>
+</blockquote>
+<span id="more"></span>
+<h3 id="约束条件一">约束条件一</h3>
+<blockquote>
+<p>每次只能翻一个或者两个，不需要连续。</p>
+</blockquote>
+<p>这其实本质上和尼姆游戏是一样的。设第 <span class="math inline">\(i\)</span> 个硬币为正表示有一个物品数为 <span class="math inline">\(i\)</span> 的堆，那么如果只翻一枚硬币，相当于将这堆物品一次取完。如果翻两枚硬币分别编号 <span class="math inline">\(i\)</span> 和 <span class="math inline">\(j\)</span> ，假设 <span class="math inline">\(i\lt j\)</span> ，那么相当于在一堆物品数为 <span class="math inline">\(j\)</span> 的堆中取 <span class="math inline">\(j-i\)</span> 个物品，该堆还剩 <span class="math inline">\(i\)</span> 个物品。当第 <span class="math inline">\(i\)</span> 枚硬币本身为反面朝上时很容易理解，而当第 <span class="math inline">\(i\)</span> 枚硬币本身为正面朝上时，只需这么理解：两个物品数相同的堆是可以完全抵消的，从 <span class="math inline">\(\text{SG}\)</span> 函数出发它们异或和为 <span class="math inline">\(0\)</span> ，从游戏本身出发，若一个人操作其中一堆物品，另一个人只需在另一堆上复读即可。</p>
+<h3 id="约束条件二ruler-游戏">约束条件二（Ruler 游戏）</h3>
+<blockquote>
+<p>每次翻动连续的至少一个硬币。</p>
+</blockquote>
+<p>由约束条件一以及 <span class="math inline">\(\text{SG}\)</span> 定理可以知道，一个局面，若有 <span class="math inline">\(k\)</span> 枚硬币正面朝上，可以看作 <span class="math inline">\(k\)</span> 个游戏的和，每个游戏中分别只有单独一枚硬币朝上。因此，只需要计算出只有一个硬币朝上的局面的 <span class="math inline">\(sg\)</span> 值即可，设只有第 <span class="math inline">\(i\)</span> 枚硬币朝上时游戏的 <span class="math inline">\(sg\)</span> 值为 <span class="math inline">\(sg(i)\)</span> ，那么根据约束条件，有：</p>
+<p><span class="math display">\[sg(i)=mex\{0,sg(i-1),sg(i-1)\oplus sg(i-2),\dots,sg(i-1)\oplus \dots \oplus sg(1)\}\]</span></p>
+<p>打表后发现：</p>
+<table>
+<thead>
+<tr class="header">
+<th>i</th>
+<th style="text-align: center;">0</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">5</th>
+<th style="text-align: center;">6</th>
+<th style="text-align: center;">7</th>
+<th style="text-align: center;">8</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>sg</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">8</td>
+</tr>
+</tbody>
+</table>
+<p>有 <span class="math inline">\(sg(i)=\text{lowbit}(i)\)</span> ，其中 <span class="math inline">\(\text{lowbit}\)</span> 函数即二进制中最低位的 <span class="math inline">\(1\)</span> 所代表的值。</p>
+<p>这里只介绍这么多了，更多的约束条件可以看参考资料博客链接。</p>
+<h2 id="nim-积">nim 积</h2>
+<p>上面介绍了翻硬币的一维版，接下来将介绍二维版，即硬币不再是排成一排，而是一个矩阵。</p>
+<blockquote>
+<p>将一个矩阵分成 <span class="math inline">\(n\)</span> 行 <span class="math inline">\(m\)</span> 列，共计 <span class="math inline">\(n\times m\)</span> 个单元格，每个单元格上有一枚或正或反的硬币，每行从上到下按 <span class="math inline">\(0\)</span> 到 <span class="math inline">\(n-1\)</span> 编号，每列从左到右按 <span class="math inline">\(0\)</span> 到 <span class="math inline">\(m-1\)</span> 编号，那么第 <span class="math inline">\(x\)</span> 行第 <span class="math inline">\(y\)</span> 列的坐标为 <span class="math inline">\((x,y)\)</span> 。A 和 B 轮流翻硬币，并且翻的硬币中存在一枚最右下的硬币，其他硬币的横纵坐标都不超过它，这枚硬币必须从正面翻到反面。不能翻者输</p>
+</blockquote>
+<h3 id="约束条件一-1">约束条件一</h3>
+<blockquote>
+<p>每次翻转一个连通块。</p>
+</blockquote>
+<p>同理，用 <span class="math inline">\(sg(x,y)\)</span> 表示只有第 <span class="math inline">\(x\)</span> 行 <span class="math inline">\(y\)</span> 列的硬币朝上时的 <span class="math inline">\(sg\)</span> 值 。</p>
+<p>可以继续打表： <span class="math display">\[
+\begin{aligned}
+1 &amp;&amp; 2 &amp;&amp; 1 &amp;&amp; 4 &amp;&amp; 1 \dots \\
+2 &amp;&amp; 4 &amp;&amp; 8 &amp;&amp; 16 &amp;&amp; 32 \dots \\
+1 &amp;&amp; 8 &amp;&amp; 16 &amp;&amp; 32 &amp;&amp; 64  \dots \\
+4 &amp;&amp; 16 &amp;&amp; 32 &amp;&amp; 64 &amp;&amp; 128  \dots \\
+1 &amp;&amp; 32 &amp;&amp; 64 &amp;&amp; 128 &amp;&amp; 256  \dots \\
+\dots
+\end{aligned}
+\]</span> 若 <span class="math inline">\(x=0\)</span> 或 <span class="math inline">\(y=0\)</span> ，相当于一个 Ruler 游戏，有 <span class="math inline">\(sg(x,y)=\text{lowbit}(x+y+1)\)</span> ，否则 <span class="math inline">\(sg(x,y)=2^{x+y}\)</span> 。</p>
+<h3 id="约束条件二">约束条件二</h3>
+<blockquote>
+<p>每次翻转一个子矩阵的四个角。</p>
+</blockquote>
+<p><span class="math display">\[sg(x,y)=\text{mex}\{sg(x,b)\oplus sg(a,y)\oplus sg(a,b) | 0\le a\lt x,0\le b\lt y\}\]</span></p>
+<p>将 <span class="math inline">\(sg\)</span> 表打出来： <span class="math display">\[
+\begin{aligned}
+0 &amp;&amp; 0 &amp;&amp; 0 &amp;&amp; 0 &amp;&amp; 0 &amp;&amp; 0   \dots \\
+0 &amp;&amp; 1 &amp;&amp; 2 &amp;&amp; 3 &amp;&amp; 4 &amp;&amp; 5  \dots \\
+0 &amp;&amp; 2 &amp;&amp; 3 &amp;&amp; 1 &amp;&amp; 8 &amp;&amp; 10   \dots \\
+0 &amp;&amp; 3 &amp;&amp; 1 &amp;&amp; 2 &amp;&amp; 12 &amp;&amp; 15  \dots \\
+0 &amp;&amp; 4 &amp;&amp; 8 &amp;&amp; 12 &amp;&amp; 6 &amp;&amp; 2   \dots \\
+0 &amp;&amp; 5 &amp;&amp; 10 &amp;&amp; 15 &amp;&amp; 2 &amp;&amp; 7   \dots \\
+0 &amp;&amp; 6 &amp;&amp; 11 &amp;&amp; 13&amp;&amp; 14 &amp;&amp; 8   \dots \\
+\dots
+\end{aligned}
+\]</span> 此时似乎不再有规律了，找规律大法大失败。</p>
+<p>但是，既然有游戏的“和”，那么有游戏的“积”也是很正常的，我们可以将这个游戏看成是两个一样的游戏相乘，这个游戏即一维版的翻硬币，不过编号变成了从 <span class="math inline">\(0\)</span> 到 <span class="math inline">\(n-1\)</span> ，每次必须翻恰好两个硬币，且编号大的那个必须是正面朝上（事实上，假如你忽略编号为 0 的硬币，这就和一维版本的约束条件一是一样的了）。</p>
+<p>那么如何计算两个游戏相乘时的 <span class="math inline">\(sg\)</span> 值呢，这里就必须引入 <span class="math inline">\(\text{nim}\)</span> 积了。</p>
+<p>形式化的，定义 <span class="math inline">\(n\)</span> 个游戏 <span class="math inline">\(G_1,G_2,\dots ,G_n\)</span> 的积 <span class="math inline">\(G(V,E)=G_1\times G_2\times \dots \times G_n\)</span> 为：</p>
+<ol type="1">
+<li><span class="math inline">\(V=V_1\times V_2\times \dots \times V_n\)</span> ，这里的 <span class="math inline">\(\times\)</span> 代表的是笛卡尔积。</li>
+<li><span class="math inline">\(E=\{(x,y)|(x_i,y_i)\in E_i,x=(x_1,x_2,\dots,x_n),y=\sum_{y_i^\ast\in\{x_i,y_i\}}(y_1^\ast,y_2^\ast,\dots,y_n^\ast)\}\)</span> ，这里的 <span class="math inline">\(y\)</span> 其实代表的是游戏的和，但是要除去 <span class="math inline">\(x\)</span> 所代表的游戏本身，即相当于 <span class="math inline">\(2^n-1\)</span> 个游戏的和。如果你觉得难以理解，那么举个不太严谨的例子，此题的一个坐标为 <span class="math inline">\((x_1,x_2)\)</span> 的硬币，其能转移到的状态，即为 <span class="math inline">\((x_1,y_2),(y_1,x_2),(y_1,y_2)\)</span> 这 <span class="math inline">\(3\)</span> 个的和，其中 <span class="math inline">\(y_1\lt x_1\)</span> ，<span class="math inline">\(y_2\lt x_2\)</span> 。</li>
+</ol>
+<p>tartan 定理：如果 <span class="math inline">\(sg_1(x)\)</span> 是游戏 <span class="math inline">\(G_1\)</span> 的 <span class="math inline">\(\text{SG}\)</span> 函数，<span class="math inline">\(sg_2(x)\)</span> 是游戏 <span class="math inline">\(G_2\)</span> 的 <span class="math inline">\(\text{SG}\)</span> 函数，那么游戏 <span class="math inline">\(G_1\times G_2\)</span> 的 <span class="math inline">\(\text{SG}\)</span> 函数 <span class="math inline">\(sg(x,y)=sg_1(x)\otimes sg_2(y)\)</span> 。其中 <span class="math inline">\(\otimes\)</span> 表示 <span class="math inline">\(\text{nim}\)</span> 积。当然，这同样也可以拓展到多维游戏相乘的情况。</p>
+<h4 id="运算性质">运算性质</h4>
+<p>和普通加法乘法类似，<span class="math inline">\(\text{nim}\)</span> 和和积也满足一些性质：</p>
+<ul>
+<li>零值：<span class="math inline">\(x\otimes 0=0\otimes x=0\)</span></li>
+<li>单位元：<span class="math inline">\(x\otimes 1=1\otimes x=x\)</span></li>
+<li>交换律：<span class="math inline">\(x\otimes y=y\otimes x\)</span></li>
+<li>结合律：<span class="math inline">\(x\otimes (y\otimes z)=(x\otimes y)\otimes z\)</span></li>
+<li>分配律：<span class="math inline">\(x\otimes(y\oplus z)=(x\otimes y)\oplus(x\otimes z)\)</span></li>
+</ul>
+<h4 id="fermat-2-power">Fermat 2-power</h4>
+<p>对于形如 <span class="math inline">\(2^{2^n}(n\in \mathbb{N})\)</span> 的数，我们称之为 Fermat 2-power 数，设一个 Fermat 2-power 数为 <span class="math inline">\(F=2^{2^a}\)</span> ，那么有：</p>
+<ul>
+<li><span class="math inline">\(F\otimes x=F\times x\)</span> ，其中 <span class="math inline">\(x&lt;F\)</span> 。</li>
+<li><span class="math inline">\(F\otimes F=\frac{3}{2}F=3\times 2^{2^a-1}\)</span> 。</li>
+<li><span class="math inline">\(x\otimes y&lt;F\)</span> ，其中 <span class="math inline">\(x,y\lt F\)</span> 。</li>
+</ul>
+<h4 id="计算方法">计算方法</h4>
+<p>对于 <span class="math inline">\(x\otimes y\)</span> ，考虑将他们二进制拆解，例如 <span class="math inline">\(3\otimes 5=(1\oplus 2)\otimes(1\oplus 4)=1\otimes 1+1\otimes 4+2\otimes 1+2\otimes 4\)</span> ，这样我们就只需要考虑计算形如 <span class="math inline">\(2^x\otimes 2^y\)</span> 这样的 <span class="math inline">\(\text{nim}\)</span> 积。在实际写代码的时候，可以预处理或者记忆化以供简化复杂度。</p>
+<p>计算 <span class="math inline">\(2^x\otimes 2^y\)</span> ，再将 <span class="math inline">\(x\)</span> 和 <span class="math inline">\(y\)</span> 二进制分解，变成 Fermat 2-power 数的情况，设 <span class="math inline">\(X,Y\)</span> 分别代表二进制分解后 <span class="math inline">\(x,y\)</span> 哪些位为 <span class="math inline">\(1\)</span> 的集合，那么有 <span class="math inline">\(2^x\otimes 2^y=(\bigotimes_{x&#39;\in X}2^{2^{x&#39;}})\otimes (\bigotimes_{y&#39;\in Y}2^{2^{y&#39;}})\)</span>，从高到低枚举二进制下每一位，设这一位为 <span class="math inline">\(2^a\)</span> ，令 <span class="math inline">\(M=2^{2^a}\)</span>： 1. 如果 <span class="math inline">\(x\)</span> 和 <span class="math inline">\(y\)</span> 这一位都是 <span class="math inline">\(1\)</span> ，令 <span class="math inline">\(X=2^{x-2^a},Y=2^{y-2^a}\)</span> ，那么 <span class="math inline">\(ans=(M\otimes X)\otimes(M\otimes Y)=(M\otimes M)\otimes (X\otimes Y)=\frac{3}{2}M\otimes (X\otimes Y)\)</span> 。设这样的位的集合为 <span class="math inline">\(S_1\)</span> 。 2. 如果 <span class="math inline">\(x\)</span> 和 <span class="math inline">\(y\)</span> 只有一个这一位为 <span class="math inline">\(1\)</span> ，假设为 <span class="math inline">\(x\)</span>，令 <span class="math inline">\(X=2^{x-2^a},Y=2^y\)</span> ，答案为 <span class="math inline">\(ans=(M\otimes X)\otimes Y\)</span> ，即 <span class="math inline">\(ans=M\otimes (X\otimes Y)\)</span> 。设这样的位的集合是 <span class="math inline">\(S_2\)</span> 。</p>
+<p>最后，实际上： <span class="math display">\[2^x\otimes 2^y=(\bigotimes_{i\in S_1}\frac{3}{2}2^{2^i})\otimes(\bigotimes_{i\in S_2}2^{2^i})=(\bigotimes_{i\in S_1}3\times 2^{2^i-1})\otimes(\prod_{i\in S_2}2^{2^i})\]</span></p>
+<p>用 <code>C++</code> 实现如下： <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">nim_mult</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">int</span> f[<span class="number">32</span>][<span class="number">32</span>]; <span class="comment">// must be initialized to -1</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">nim_mult_2power</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (!x || !y) <span class="keyword">return</span> <span class="number">1</span> &lt;&lt; (x + y);</span><br><span class="line">	<span class="keyword">int</span> &amp;F = f[x][y];</span><br><span class="line">	<span class="keyword">if</span> (F != <span class="number">-1</span>) <span class="keyword">return</span> F;</span><br><span class="line">	<span class="keyword">int</span> ret = <span class="number">1</span>, tmp = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">6</span>; ++i)</span><br><span class="line">		<span class="keyword">if</span> ((x ^ y) &gt;&gt; i &amp; <span class="number">1</span>) tmp *= <span class="number">1</span> &lt;&lt; (<span class="number">1</span> &lt;&lt; i);</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (x &gt;&gt; i &amp; <span class="number">1</span>) ret = <span class="built_in">nim_mult</span>(ret, <span class="number">3</span> * (<span class="number">1</span> &lt;&lt; ((<span class="number">1</span> &lt;&lt; i) - <span class="number">1</span>)));</span><br><span class="line">	<span class="keyword">return</span> F = <span class="built_in">nim_mult</span>(ret, tmp);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">nim_mult</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (x &lt; <span class="number">2</span> || y &lt; <span class="number">2</span>) <span class="keyword">return</span> x * y;</span><br><span class="line">	<span class="keyword">int</span> ret = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">32</span>; ++i)</span><br><span class="line">		<span class="keyword">if</span> (x &gt;&gt; i &amp; <span class="number">1</span>)</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">32</span>; ++j)</span><br><span class="line">				<span class="keyword">if</span> (y &gt;&gt; j &amp; <span class="number">1</span>)</span><br><span class="line">					ret ^= <span class="built_in">nim_mult_2power</span>(i, j);</span><br><span class="line">	<span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>后来面包哥哥 <span class="citation" data-cites="tangjz">@tangjz</span> 教了我另一种做法，复杂度更低：</p>
+<p>计算 <span class="math inline">\(x\otimes y\)</span> ，假设有 <span class="math inline">\(x\ge y\)</span> ，设 <span class="math inline">\(2^{2^a}\le x\lt 2^{2^{a+1}}\)</span> ，令 <span class="math inline">\(M=2^{2^a}\)</span> ，则 <span class="math inline">\(x=pM+q , y=sM+t(0\le q,t\lt M)\)</span> 。那么有： <span class="math display">\[
+\begin{aligned}
+x\otimes y&amp;=(pM+q)\otimes(sM+t)\\
+&amp;=(pM\oplus q)\otimes(sM\oplus t)\\
+&amp;=(p\otimes M\otimes s\otimes M)\oplus(p\otimes M\otimes t)\oplus(s\otimes M\otimes q)\oplus(q\otimes t) \\
+&amp;=(\frac{3}{2}M\otimes p\otimes s)\oplus (M\otimes(p\otimes t\oplus s\otimes q))\oplus(q\otimes t)\\
+&amp;=((M\oplus \frac{M}{2})\otimes p\otimes s))\oplus (M\otimes(p\otimes t\oplus s\otimes q))\oplus(q\otimes t)\\
+&amp;=M\times (p\otimes s\oplus p\otimes t\oplus s\otimes q)\oplus(q\otimes t)\oplus(\frac{M}{2}\otimes p\otimes s)\\
+&amp;=M\times ((p\oplus q)\otimes(s\oplus t)\oplus (q\otimes t))\oplus(q\otimes t)\oplus(\frac{M}{2}\otimes p\otimes s)
+\end{aligned}
+\]</span> 令 <span class="math inline">\(t_0=q\otimes t,t_1=(p\oplus q)\otimes (s\oplus t),t_2=p\otimes s\otimes \frac{M}{2}\)</span> ，则： <span class="math display">\[x\otimes y=M\times(t_0\oplus t1)\oplus t_0\oplus t_2\]</span></p>
+<p>其中，计算 <span class="math inline">\(\frac{M}{2}\otimes v\)</span> 复杂度为 <span class="math inline">\(O(3^{d-1})\)</span> ，因此总复杂度为 <span class="math inline">\(O(d\times 3^{d})\)</span> ，其中 <span class="math inline">\(d\)</span> 为递归层数，约为 <span class="math inline">\(\log_2\log_2 x\)</span>。同时，可以记忆化 <span class="math inline">\(x\)</span> 和 <span class="math inline">\(y\)</span> 都比较小的情况。</p>
+<p>此外，<span class="math inline">\(\text{nim}\)</span> 积也存在逆元。</p>
+<h3 id="约束条件三rugs-游戏">约束条件三（Rugs 游戏）</h3>
+<blockquote>
+<p>每次翻转一个子矩阵。</p>
+</blockquote>
+<p>即两个 Ruler 游戏相乘，那么 <span class="math inline">\(sg(x,y)=\text{lowbit}(x+1)\otimes \text{lowbit}(y+1)\)</span> 。</p>
+<p>最后，建议做一做 <a href="/2018/02/02/Project-Euler-459/">PE459</a> 来练习一下 <span class="math inline">\(\text{nim}\)</span> 积。</p>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yfceshi/p/7259456.html" class="uri">https://www.cnblogs.com/yfceshi/p/7259456.html</a></li>
+<li><a href="/uploads/comb.pdf">Game Theory</a></li>
+<li>2009国家集训队论文《从“k 倍动态减法游戏”出发探究一类组合游戏问题》</li>
+<li>https://www.cnblogs.com/zjp-shadow/p/10507030.htmla</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Game-Theory/" rel="tag"># Game Theory</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/11/05/%E4%B8%89%E4%B8%AA%E7%BB%8F%E5%85%B8%E5%8D%9A%E5%BC%88/" rel="prev" title="三个经典博弈">
+      <i class="fa fa-chevron-left"></i> 三个经典博弈
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/11/09/Hackenbush/" rel="next" title="Hackenbush">
+      Hackenbush <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#nim-%E5%92%8C"><span class="nav-number">1.</span> <span class="nav-text">nim 和</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%A6%E6%9D%9F%E6%9D%A1%E4%BB%B6%E4%B8%80"><span class="nav-number">1.1.</span> <span class="nav-text">约束条件一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%A6%E6%9D%9F%E6%9D%A1%E4%BB%B6%E4%BA%8Cruler-%E6%B8%B8%E6%88%8F"><span class="nav-number">1.2.</span> <span class="nav-text">约束条件二（Ruler 游戏）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nim-%E7%A7%AF"><span class="nav-number">2.</span> <span class="nav-text">nim 积</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%A6%E6%9D%9F%E6%9D%A1%E4%BB%B6%E4%B8%80-1"><span class="nav-number">2.1.</span> <span class="nav-text">约束条件一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%A6%E6%9D%9F%E6%9D%A1%E4%BB%B6%E4%BA%8C"><span class="nav-number">2.2.</span> <span class="nav-text">约束条件二</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E6%80%A7%E8%B4%A8"><span class="nav-number">2.2.1.</span> <span class="nav-text">运算性质</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#fermat-2-power"><span class="nav-number">2.2.2.</span> <span class="nav-text">Fermat 2-power</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95"><span class="nav-number">2.2.3.</span> <span class="nav-text">计算方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%A6%E6%9D%9F%E6%9D%A1%E4%BB%B6%E4%B8%89rugs-%E6%B8%B8%E6%88%8F"><span class="nav-number">2.3.</span> <span class="nav-text">约束条件三（Rugs 游戏）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="chitanda"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">chitanda</p>
+  <div class="site-description" itemprop="description">随缘写，待更就是咕了</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hiaatcnd" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hiaatcnd" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:immortalhx2@gmail.com" title="E-Mail → mailto:immortalhx2@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">chitanda</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'R1oXB3H3fuBdOim5r17oSvrk-gzGzoHsz',
+      appKey     : 'Fy44Vr8nflccguqMkcoI9QW0',
+      placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

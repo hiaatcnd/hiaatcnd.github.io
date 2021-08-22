@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hiaatcnd.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"9DY0ZVLOEK","apiKey":"cceb124574a128f58b19be198ddaf1cd","indexName":"chitandablog","hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="三个经典博弈 有三个经典的博弈论问题，分别是巴什博弈（Bash Game）、威佐夫博弈（Wythoff Game）和尼姆博弈（Nimm Game），从这三个问题入手，可以对博弈论有一个初步的了解。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="三个经典博弈">
+<meta property="og:url" content="https://hiaatcnd.github.io/2019/11/05/%E4%B8%89%E4%B8%AA%E7%BB%8F%E5%85%B8%E5%8D%9A%E5%BC%88/index.html">
+<meta property="og:site_name" content="chitanda&#39;s blog">
+<meta property="og:description" content="三个经典博弈 有三个经典的博弈论问题，分别是巴什博弈（Bash Game）、威佐夫博弈（Wythoff Game）和尼姆博弈（Nimm Game），从这三个问题入手，可以对博弈论有一个初步的了解。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-11-05T06:25:16.000Z">
+<meta property="article:modified_time" content="2019-11-08T12:42:43.829Z">
+<meta property="article:author" content="chitanda">
+<meta property="article:tag" content="Game Theory">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://hiaatcnd.github.io/2019/11/05/%E4%B8%89%E4%B8%AA%E7%BB%8F%E5%85%B8%E5%8D%9A%E5%BC%88/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>三个经典博弈 | chitanda's blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?cc5080b5a8e7b76ad7babd2be384450e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chitanda's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">吃蛋挞的咸鱼博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hiaatcnd.github.io/2019/11/05/%E4%B8%89%E4%B8%AA%E7%BB%8F%E5%85%B8%E5%8D%9A%E5%BC%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="chitanda">
+      <meta itemprop="description" content="随缘写，待更就是咕了">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chitanda's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          三个经典博弈
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-05 14:25:16" itemprop="dateCreated datePublished" datetime="2019-11-05T14:25:16+08:00">2019-11-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-08 20:42:43" itemprop="dateModified" datetime="2019-11-08T20:42:43+08:00">2019-11-08</time>
+              </span>
+
+          
+            <span id="/2019/11/05/%E4%B8%89%E4%B8%AA%E7%BB%8F%E5%85%B8%E5%8D%9A%E5%BC%88/" class="post-meta-item leancloud_visitors" data-flag-title="三个经典博弈" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/11/05/%E4%B8%89%E4%B8%AA%E7%BB%8F%E5%85%B8%E5%8D%9A%E5%BC%88/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/11/05/%E4%B8%89%E4%B8%AA%E7%BB%8F%E5%85%B8%E5%8D%9A%E5%BC%88/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="三个经典博弈">三个经典博弈</h2>
+<p>有三个经典的博弈论问题，分别是巴什博弈（Bash Game）、威佐夫博弈（Wythoff Game）和尼姆博弈（Nimm Game），从这三个问题入手，可以对博弈论有一个初步的了解。</p>
+<span id="more"></span>
+<h3 id="巴什博弈">巴什博弈</h3>
+<blockquote>
+<p><span class="math inline">\(n\)</span> 个物品，A 和 B 轮流取，至少取 <span class="math inline">\(1\)</span> 个，至多取 <span class="math inline">\(m\)</span> 个，不能取者失败。</p>
+</blockquote>
+<p>可以发现，无论一个人取多少个，另一个人再取总能让两次取的个数之和恰为 <span class="math inline">\(m+1\)</span> 。</p>
+<p>设 <span class="math inline">\(n=r\times(m+1)+s\)</span> ，有两种情况：</p>
+<ol type="1">
+<li><span class="math inline">\(s=0\)</span> ，假设先手取 <span class="math inline">\(k\)</span> 个，后手取 <span class="math inline">\(m+1-k\)</span> 个，总能保持剩下的物品数为 <span class="math inline">\(m+1\)</span> 的倍数，此时后手必胜。</li>
+<li><span class="math inline">\(s&gt;0\)</span> ，先手先取 <span class="math inline">\(s\)</span> 个，接下来的情况和 1 一样，此时先手必胜。</li>
+</ol>
+<p>因此，<span class="math inline">\(s&gt;0\)</span> 时先手必胜，<span class="math inline">\(s=0\)</span> 时后手必胜。</p>
+<p>拓展一下，把 “至少取 <span class="math inline">\(1\)</span> 个” 改成 “至少取 <span class="math inline">\(t\)</span> 个”，事情会变得如何呢？</p>
+<p>实际上，只需将上述解答过程中的 <span class="math inline">\(1\)</span> 改成 <span class="math inline">\(t\)</span> ，并把先手必胜状态改为 <span class="math inline">\(s\ge t\)</span> ，相应的把后手必胜状态改为 <span class="math inline">\(0\le s\lt t\)</span> 即可。</p>
+<p>让我们回到原始的巴什博弈，设当前游戏的状态是 <span class="math inline">\(S\)</span> ，这里的状态是一个宽泛的概念，对于不同的游戏是不一样的，对于巴什博弈，<span class="math inline">\(S\)</span> 即剩下的物品数 <span class="math inline">\(n\)</span> 。再设计一个函数 <span class="math inline">\(f(S)\)</span> ，用来计算一个游戏状态的<strong>值</strong> ，对于巴什博弈，可以是 <span class="math inline">\(f(n)=n \bmod (m+1)\)</span> 。</p>
+<ol type="1">
+<li>当游戏结束时，<span class="math inline">\(n=0\)</span> ，此时 <span class="math inline">\(f(n)\)</span> 的值是 <span class="math inline">\(0\)</span> 。</li>
+<li>对于先手必败状态，都有 <span class="math inline">\(f(n)=0\)</span> 。</li>
+<li>对于先手必胜的状态，都有 <span class="math inline">\(f(n)&gt;0\)</span> 。</li>
+<li>对于所有 <span class="math inline">\(f(n)=0\)</span> 的状态，无论如何操作，后续状态的值都大于 <span class="math inline">\(0\)</span> 。</li>
+<li>对于所有 <span class="math inline">\(f(n) &gt; 0\)</span> 的状态，总有办法让后续状态的值为 <span class="math inline">\(0\)</span> 。</li>
+</ol>
+<p>以上，其实就是组合游戏定义对于巴什博弈的具体化描述了，也非常接近于后面要说的 <span class="math inline">\(\text{SG}\)</span> 函数。</p>
+<h3 id="威佐夫博弈">威佐夫博弈</h3>
+<blockquote>
+<p>两堆物品，分别有 <span class="math inline">\(n\)</span> 和 <span class="math inline">\(m\)</span> 个物品，A 和 B 轮流取，每次可以选择从一堆或者同时从两堆中取至少一个物品（若取两堆，取的个数需相同），不能取者失败。</p>
+</blockquote>
+<p>用 <span class="math inline">\((x,y)\)</span> 表示两堆剩下的物品数（即当前游戏的状态 <span class="math inline">\(S\)</span> ），并且不失一般性的让 <span class="math inline">\(x\le y\)</span> 。显然 <span class="math inline">\((0,0)\)</span> 是一个先手必败状态，接下来为了简化我们称之为必败态。根据组合游戏的定义来继续推导，可以发现 <span class="math inline">\((1,2)\)</span> <span class="math inline">\((3,5)\)</span> <span class="math inline">\((4,7)\)</span> <span class="math inline">\((6,10)\)</span> <span class="math inline">\((8,13)\)</span> 等等也是必败态。</p>
+<p>这里面似乎有什么规律？两个数之间的差好像每次加 <span class="math inline">\(1\)</span> ？所有的数都最多出现一次？如果继续暴力往后计算必败态还可以发现，每个正数都恰好出现了一次（没错，找规律也是博弈论中很重要的一部分）。</p>
+<p>让我们将所有必败态按 <span class="math inline">\(x​\)</span> 的从小到大排成一排，设 <span class="math inline">\((a_i,b_i)​\)</span> 为第 <span class="math inline">\(i​\)</span> 个必败态，其中 <span class="math inline">\((0,0)​\)</span> 为第 0 个，那么有 <span class="math inline">\(b_i=a_i+i​\)</span> ，而 <span class="math inline">\(a_i​\)</span> 是前面所有必败态中第一个没有出现过的正整数。接下来证明这样的状态都确实是必败态，而其他的所有状态都是必胜态（即先手必胜状态）：</p>
+<ol type="1">
+<li><p>当前是必败态。</p>
+<ul>
+<li>若只从一堆中取物，由于每个数只在所有必败态中出现一次，显然不能从一个必败态转移到另一个必败态。</li>
+<li>若同时从两堆中取，由于每个必败态两个数的差都是不同的，同时取无法改变差值，也无法转移。</li>
+</ul></li>
+</ol>
+<p>因此，从必败态只能转移到必胜态。</p>
+<ol start="2" type="1">
+<li><p>当前是必胜态，设当前状态是 <span class="math inline">\((x,y)\)</span> ，<span class="math inline">\(x\)</span> 必然是某个必败态 <span class="math inline">\((a_i,b_i)\)</span> 中的一个值：</p>
+<ul>
+<li><span class="math inline">\(x=a_i\)</span> ，那么若 <span class="math inline">\(y&gt;b_i\)</span> ，从第二堆中取 <span class="math inline">\(y-b_i\)</span> 个即可，若 <span class="math inline">\(y&lt;b_i\)</span> ，从两堆中同时取 <span class="math inline">\(x-a_{y-x}\)</span> ，状态变为 <span class="math inline">\((a_{y-x},a_{y-x}+y-x)\)</span> ，显然为必败态。（注意，此时 <span class="math inline">\(y-x\lt i\)</span> ，所以 <span class="math inline">\(a_{y-x}\)</span> 必然是小于 <span class="math inline">\(a_i\)</span> 的）</li>
+<li><span class="math inline">\(x=b_i\)</span> ，显然 <span class="math inline">\(y\gt a_i\)</span> ，从第二堆中取 <span class="math inline">\(y-a_i\)</span> 个即可 。</li>
+</ul></li>
+</ol>
+<p>因此，从必胜态可以转移到必败态。</p>
+<p>必败态和黄金分割率有着紧密的联系，设黄金分割率为 <span class="math inline">\(\phi=\frac{1+\sqrt{5}}{2}\)</span> ，那么有 <span class="math inline">\(a_i=\lfloor i\phi \rfloor\)</span> ，<span class="math inline">\(b_i=\lfloor i\phi ^2\rfloor\)</span> ，多么美妙！而黄金分割率和斐波那契又有着关联，所以必败态和斐波那契也应有着某种联系（这一点还是原队友在赛场上发现的，因为我当时忘记这个公式了，我们找了一个小时的规律）。</p>
+<p>观察斐波那契数列从第一项开始的数：</p>
+<p><span class="math display">\[1, 2, 3, 5, 8, 13, 21, 34, \dots\]</span></p>
+<p>可以发现，相邻两个数放一起，<span class="math inline">\((1,2),(3,5),(8,13),(21,34)\)</span> 都是必败态！再观察 <span class="math inline">\((8,13)\)</span> 和 <span class="math inline">\((21,34)\)</span> 之间的必败态 ：</p>
+<p><span class="math display">\[(9,15),(11,18),(12,20),(14,23),\dots ,(19,31)\]</span></p>
+<p>他们的 <span class="math inline">\(x\)</span> 减去 <span class="math inline">\(8\)</span> ，<span class="math inline">\(y\)</span> 减去 <span class="math inline">\(13\)</span> 后：</p>
+<p><span class="math display">\[(1,2),(3,5),(4,7),(6,10),\dots ,(11,18)\]</span></p>
+<p>也都是新的必败态！</p>
+<p>那么我们可以得到一个不需要用到实数计算的检验一个状态 <span class="math inline">\((x,y)\)</span> 是不是必败态的方法（这也是当时我们赛场上的做法）：</p>
+<ol type="1">
+<li>二分出最大的奇数项斐波那契数 <span class="math inline">\(fib_{2k+1}(k\ge 0)\)</span> 使得 <span class="math inline">\(fib_{2k+1}\le x\)</span> ，令 <span class="math inline">\(x&#39;=x-fib_{2k+1}\)</span> ，<span class="math inline">\(y&#39;=y-fib_{2k+2}\)</span></li>
+<li>若 <span class="math inline">\(x&#39;\neq 0\)</span> ，令 <span class="math inline">\(x=x&#39;\)</span> ，<span class="math inline">\(y=y&#39;\)</span> ，重新执行步骤 1</li>
+<li>若 <span class="math inline">\(x&#39;=0\)</span> ，检查是否 <span class="math inline">\(y&#39;=0\)</span> ，如果是，那么初始的 <span class="math inline">\((x,y)\)</span> 为必败态，否则为必败态</li>
+</ol>
+<h3 id="尼姆博弈">尼姆博弈</h3>
+<blockquote>
+<p><span class="math inline">\(n\)</span> 堆物品，其中第 <span class="math inline">\(i\)</span> 堆的物品数为 <span class="math inline">\(a_i\)</span> ，A 和 B 轮流取，每次任选一堆取至少一个物品，不能取者失败。</p>
+</blockquote>
+<p>回顾巴什博弈，我们定义了一个计算当前游戏状态 <span class="math inline">\(S\)</span> 的值的函数 <span class="math inline">\(f(S)\)</span> ，而现在可以正式介绍 <span class="math inline">\(\text{SG}\)</span> 函数了。</p>
+<p><span class="math inline">\(\text{SG}\)</span> 函数是 <span class="math inline">\(\text{Sprague-Grundy}\)</span> 函数的简称，类似的，一个 <span class="math inline">\(\text{SG}\)</span> 函数 <span class="math inline">\(sg(S)\)</span> 也是用来计算当前游戏状态 <span class="math inline">\(S\)</span> 的值，但相比于 <span class="math inline">\(f(S)\)</span> ，它直接规定了计算方法：<span class="math inline">\(sg(S)=\text{mex}\{sg(S&#39;)|S \rightarrow S&#39;\}\)</span> ，其中 <span class="math inline">\(S\rightarrow S&#39;\)</span> 表示状态 <span class="math inline">\(S\)</span> 能到达 <span class="math inline">\(S&#39;\)</span> ，<span class="math inline">\(\text{mex}\)</span> 是 minimum excludant 的简称，即第一个未出现的非负整数。显然，对于结束状态，它不能到达任何其他状态，因此其 <span class="math inline">\(sg\)</span> 值必然为 <span class="math inline">\(0\)</span> ，进一步思考可以发现必胜状态的 <span class="math inline">\(sg\)</span> 值必然大于 <span class="math inline">\(0\)</span> ，必败状态的 <span class="math inline">\(sg\)</span> 值必然等于 <span class="math inline">\(0\)</span> 。总而言之，一个状态能到达任何 <span class="math inline">\(sg\)</span> 值小于它的状态，不能到达任何 <span class="math inline">\(sg\)</span> 值等于它的状态。</p>
+<p>回到尼姆博弈，我们将状态 <span class="math inline">\(S\)</span> 定义为 <span class="math inline">\(\{a_1,a_2,\dots,a_n\}\)</span> ，当 <span class="math inline">\(n=1\)</span> 时，可以发现 <span class="math inline">\(sg(\{a_1\})=a_1\)</span> ，但当 <span class="math inline">\(n&gt;1\)</span> 时呢？显然我们可以通过定义来暴力计算，但这样效率很低，有没有更加高效便捷的办法？答案是 <span class="math inline">\(\text{SG}\)</span> 定理。</p>
+<p>形式化的，定义 <span class="math inline">\(n\)</span> 个游戏 <span class="math inline">\(G_1,G_2,\dots ,G_n\)</span> 的和 <span class="math inline">\(G(V,E)=G_1+G_2+\dots +G_n\)</span> 为：</p>
+<ol type="1">
+<li><span class="math inline">\(V=V_1\times V_2\times \dots \times V_n\)</span> ，这里的 <span class="math inline">\(\times\)</span> 代表的是笛卡尔积。</li>
+<li><span class="math inline">\(E=\{(x,y)|x=(x_1,x_2,\dots,x_n),y=(y_1,y_2,\dots,y_n),(x_k,y_k)\in E_k,1\le k\le n,y_i=x_i,\forall i\neq k\}\)</span> 。</li>
+</ol>
+<p>解释一下，<span class="math inline">\(V\)</span> 点集代表游戏的状态集合，<span class="math inline">\(E\)</span> 有向边集代表游戏的状态转移， 对于游戏的和 <span class="math inline">\(G\)</span> 的转移，即选择一个子游戏 <span class="math inline">\(k\)</span> 进行状态转移，而其他子游戏状态保持不变。</p>
+<p>游戏和的 <span class="math inline">\(\text{SG}​\)</span> 函数等于各个游戏 <span class="math inline">\(\text{SG}​\)</span> 函数的 <span class="math inline">\(\text{nim}​\)</span> 和，而 <span class="math inline">\(\text{nim}​\)</span> 和，即异或和。证明如下：</p>
+<p>不失一般性的，考虑两个游戏的和的 <span class="math inline">\(\text{SG}\)</span> 函数 <span class="math inline">\(sg(S)\)</span> ，<span class="math inline">\(S\)</span> 由两个游戏的状态 <span class="math inline">\(S_a\)</span> 和 <span class="math inline">\(S_b\)</span> 组成，并且分别设两个游戏的 <span class="math inline">\(\text{SG}\)</span> 函数为 <span class="math inline">\(sg_a(S_a)\)</span> 和 <span class="math inline">\(sg_b(S_b)\)</span> ，那么要证明 <span class="math inline">\(sg(S)=sg_a(S_a)\oplus sg_b(S_b)\)</span> 是对的（这里 <span class="math inline">\(\oplus\)</span> 即代表 <span class="math inline">\(\text{nim}\)</span> 和），只需证明那句“一个状态能到达任何 <span class="math inline">\(sg\)</span> 值小于它的状态，不能到达任何 <span class="math inline">\(sg\)</span> 值等于它的状态”，即满足了 <span class="math inline">\(\text{SG}\)</span> 的定义。</p>
+<ol type="1">
+<li>不能到达任何 <span class="math inline">\(sg\)</span> 值等于它的状态 ，由于每次操作只可能改变一个游戏的状态，根据异或操作的性质，无论如何都不可能让后续状态的 <span class="math inline">\(sg\)</span> 值保持不变 。即 <span class="math inline">\(\forall S&#39; \in \{S&#39;|S\rightarrow S&#39;\}\)</span> ，都有 <span class="math inline">\(sg(S&#39;)\neq sg(S)\)</span> 。</li>
+<li>能到达任何 <span class="math inline">\(sg\)</span> 值小于它的状态 ，假设 <span class="math inline">\(sg_a(S_a)=a\)</span> ，<span class="math inline">\(sg_b(S_b)=b\)</span> ，令 <span class="math inline">\(c=a\oplus b\)</span> ，<span class="math inline">\(\forall v\lt c\)</span> ，令 <span class="math inline">\(t=v\oplus c\)</span> ，设 <span class="math inline">\(t\)</span> 在二进制下最高位为第 <span class="math inline">\(k\)</span> 位，那么 <span class="math inline">\(a\)</span> 和 <span class="math inline">\(b\)</span> 中必然存在一个数第 <span class="math inline">\(k\)</span> 位为 <span class="math inline">\(1\)</span> ，假设这个数是 <span class="math inline">\(a\)</span> ，令 <span class="math inline">\(a&#39;=t\oplus a\)</span> ，那么有 <span class="math inline">\(a&#39;\oplus b=t\oplus a\oplus b=v\oplus c\oplus c=v\)</span> ，而显然 <span class="math inline">\(a&#39;\)</span> 一定是小于 <span class="math inline">\(a\)</span> 的，根据定义，<span class="math inline">\(\exists S_a&#39;\in\{S_a&#39;|S_a\rightarrow S_a&#39;\}\)</span> 满足 <span class="math inline">\(sg_a(S_a&#39;)=a&#39;\)</span> 。所以 $S'{S'|SS'} $ 满足 <span class="math inline">\(sg(S&#39;)=v\)</span> 。</li>
+</ol>
+<p>当游戏是多个游戏的和时也是一样，不再赘述。</p>
+<p>再次回到尼姆博弈，它其实相当于是 <span class="math inline">\(n\)</span> 个一堆的游戏的和，那么显然有：</p>
+<p><span class="math display">\[sg(S)=sg(\{a_1\})\oplus sg(\{a_2\})\oplus \dots \oplus sg(\{a_n\})=a_1\oplus a_2\oplus \dots \oplus a_n\]</span></p>
+<p>当 <span class="math inline">\(sg(S)&gt;0\)</span> 时先手必胜，当 <span class="math inline">\(sg(S)=0\)</span> 时先手必败。</p>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%A8%81%E4%BD%90%E5%A4%AB%E6%B8%B8%E6%88%8F">威佐夫游戏</a></li>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97">斐波那契数列</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Game-Theory/" rel="tag"># Game Theory</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/11/04/%E5%8D%9A%E5%BC%88%E8%AE%BA/" rel="prev" title="博弈论">
+      <i class="fa fa-chevron-left"></i> 博弈论
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/11/08/%E4%BB%8E-nim-%E5%92%8C%E5%88%B0-nim-%E7%A7%AF/" rel="next" title="从 nim 和到 nim 积">
+      从 nim 和到 nim 积 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E4%B8%AA%E7%BB%8F%E5%85%B8%E5%8D%9A%E5%BC%88"><span class="nav-number">1.</span> <span class="nav-text">三个经典博弈</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%B4%E4%BB%80%E5%8D%9A%E5%BC%88"><span class="nav-number">1.1.</span> <span class="nav-text">巴什博弈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A8%81%E4%BD%90%E5%A4%AB%E5%8D%9A%E5%BC%88"><span class="nav-number">1.2.</span> <span class="nav-text">威佐夫博弈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%BC%E5%A7%86%E5%8D%9A%E5%BC%88"><span class="nav-number">1.3.</span> <span class="nav-text">尼姆博弈</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">2.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="chitanda"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">chitanda</p>
+  <div class="site-description" itemprop="description">随缘写，待更就是咕了</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hiaatcnd" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hiaatcnd" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:immortalhx2@gmail.com" title="E-Mail → mailto:immortalhx2@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">chitanda</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'R1oXB3H3fuBdOim5r17oSvrk-gzGzoHsz',
+      appKey     : 'Fy44Vr8nflccguqMkcoI9QW0',
+      placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

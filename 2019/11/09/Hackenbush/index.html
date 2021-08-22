@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hiaatcnd.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"9DY0ZVLOEK","apiKey":"cceb124574a128f58b19be198ddaf1cd","indexName":"chitandablog","hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Hackenbush Hackenbush 是由数学家 John Horton Conway 发明的一个双人游戏，他在组合博弈等领域颇有成果， 是组合博弈论的开创者之一，后面要讲到的 surreal number 也是他所定义和构造的。Hackenbush 有一条称之为 &quot;ground&quot; 的线（或者将其看作点，称之为根，这并没有什么区别）和一些端点，以及若干条线段，每条线段连接两个端点或者一个端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hackenbush">
+<meta property="og:url" content="https://hiaatcnd.github.io/2019/11/09/Hackenbush/index.html">
+<meta property="og:site_name" content="chitanda&#39;s blog">
+<meta property="og:description" content="Hackenbush Hackenbush 是由数学家 John Horton Conway 发明的一个双人游戏，他在组合博弈等领域颇有成果， 是组合博弈论的开创者之一，后面要讲到的 surreal number 也是他所定义和构造的。Hackenbush 有一条称之为 &quot;ground&quot; 的线（或者将其看作点，称之为根，这并没有什么区别）和一些端点，以及若干条线段，每条线段连接两个端点或者一个端">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hiaatcnd.github.io/uploads/hackenbush0.png">
+<meta property="og:image" content="https://hiaatcnd.github.io/uploads/hackenbush1.png">
+<meta property="og:image" content="https://hiaatcnd.github.io/uploads/hackenbush2.png">
+<meta property="og:image" content="https://hiaatcnd.github.io/uploads/hackenbush3.png">
+<meta property="og:image" content="https://hiaatcnd.github.io/uploads/hackenbush4.png">
+<meta property="og:image" content="https://hiaatcnd.github.io/uploads/hackenbush5.png">
+<meta property="og:image" content="https://hiaatcnd.github.io/uploads/hackenbush6.png">
+<meta property="article:published_time" content="2019-11-09T08:32:01.000Z">
+<meta property="article:modified_time" content="2021-08-22T13:14:54.993Z">
+<meta property="article:author" content="chitanda">
+<meta property="article:tag" content="Game Theory">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hiaatcnd.github.io/uploads/hackenbush0.png">
+
+<link rel="canonical" href="https://hiaatcnd.github.io/2019/11/09/Hackenbush/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Hackenbush | chitanda's blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?cc5080b5a8e7b76ad7babd2be384450e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chitanda's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">吃蛋挞的咸鱼博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hiaatcnd.github.io/2019/11/09/Hackenbush/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="chitanda">
+      <meta itemprop="description" content="随缘写，待更就是咕了">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chitanda's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Hackenbush
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-09 16:32:01" itemprop="dateCreated datePublished" datetime="2019-11-09T16:32:01+08:00">2019-11-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-08-22 21:14:54" itemprop="dateModified" datetime="2021-08-22T21:14:54+08:00">2021-08-22</time>
+              </span>
+
+          
+            <span id="/2019/11/09/Hackenbush/" class="post-meta-item leancloud_visitors" data-flag-title="Hackenbush" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/11/09/Hackenbush/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/11/09/Hackenbush/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="hackenbush">Hackenbush</h1>
+<p>Hackenbush 是由数学家 John Horton Conway 发明的一个双人游戏，他在组合博弈等领域颇有成果， 是组合博弈论的开创者之一，后面要讲到的 surreal number 也是他所定义和构造的。Hackenbush 有一条称之为 "ground" 的线（或者将其看作点，称之为根，这并没有什么区别）和一些端点，以及若干条线段，每条线段连接两个端点或者一个端点和 ground 线，并且每条线段都和 ground 连通。两个玩家轮流操作，每次选择一条线段删除，同时将那些和 ground 不再连通的线段也一并删除，不能操作的玩家失败。</p>
+<p>在最初版本的 Hackenbush 中，每个玩家都可以删除任意一条线段，但在后来，又发明出了每条线段可以被配置成只能其中一个玩家删除的版本。一般来说，有三种版本：</p>
+<ul>
+<li><em>Original Hackenbush</em>: 或者称之为 <em>Green Hackenbush</em>，只有绿色的边，即最初版本。</li>
+<li><em>Blue-Red Hackenbush</em>: 蓝色的边只能由玩家一删除，红色的边只能由玩家二删除。</li>
+<li><em>Blue-Red-Green Hackenbush</em>: 最复杂的版本。</li>
+</ul>
+<p>而每种版本，也都还有着链、树和图三种不同复杂性的区别。</p>
+<p>接下来，我将分别介绍这三种版本，并尽量给出易懂的过程证明。</p>
+<span id="more"></span>
+<h2 id="green-hackenbush">Green Hackenbush</h2>
+<p>Green Hackenbush 属于平等博弈，因此也是通过 SG 定理来解决的，让我们一步步分析。</p>
+<h3 id="链">链</h3>
+<p>这种情况也叫 bamboo stalks，由若干条链组成，这实际上就等价于尼姆博弈了，不再赘述。</p>
+<h3 id="树">树</h3>
+<p>如何计算一棵树的 <span class="math inline">\(sg\)</span> 值是问题的关键。</p>
+<p>Thomas S. Ferguson 的 "GAME THEORY" 中介绍了解决的方法。</p>
+<blockquote>
+<p><strong><em>Colon Principle</em></strong>: When branches come together at a vertex, one may replace the branches by a non-branching stalk of length equal to their nim sum.</p>
+</blockquote>
+<p>翻译一下，就是当不同的分支在一个节点交汇时，可以用一条长为他们 <span class="math inline">\(\text{nim}\)</span> 和的链来代替他们。实际上，这条原理对于图的情况也是适用的，不过要求不同分支之间没有其他交点。</p>
+<p>证明：考虑一个任意一个 Hackenbush 所描述的图 <span class="math inline">\(G\)</span> ，选择 <span class="math inline">\(G\)</span> 中任意一个点 <span class="math inline">\(x\)</span> ，让 <span class="math inline">\(H_1\)</span> 和 <span class="math inline">\(H_2\)</span> 是任意拥有相同 <span class="math inline">\(sg\)</span> 值的图，令 <span class="math inline">\(G_1=G_x:H_1\)</span> ，<span class="math inline">\(G_2=G_x:H_2\)</span> ，其中 <span class="math inline">\(G_x:H_i\)</span> 表示将 <span class="math inline">\(H_i\)</span> 连在 <span class="math inline">\(G\)</span> 的点 <span class="math inline">\(x\)</span> 上（即 <span class="math inline">\(H_i\)</span> 原本连向 ground 的边改为连向 <span class="math inline">\(x\)</span> ）。那么，<span class="math inline">\(G_1\)</span> 和 <span class="math inline">\(G_2\)</span> 应该拥有同样的 <span class="math inline">\(sg\)</span> 值 ，<span class="math inline">\(G_1+G_2\)</span> 的 <span class="math inline">\(sg\)</span> 值为 <span class="math inline">\(0\)</span> ，为先手必败态：如果先手在 <span class="math inline">\(G_i\)</span> 中原本为 <span class="math inline">\(G\)</span> 的部分删除一条边，那么后手只需在另一个图中复制该操作，如果先手在 <span class="math inline">\(H_i\)</span> 中操作，改变了原本 <span class="math inline">\(H_i\)</span> 的 <span class="math inline">\(sg\)</span> 值，那么后手也能有办法将 <span class="math inline">\(H_{3-i}\)</span> 的 <span class="math inline">\(sg\)</span> 值变成一样的。当 <span class="math inline">\(H_1\)</span> 是一条长为 <span class="math inline">\(sg\)</span> 值的链时，这意味着，<span class="math inline">\(H_2\)</span> 能被长为其 <span class="math inline">\(sg\)</span> 值的链所替代。</p>
+<figure>
+<img src="/uploads/hackenbush0.png" alt="树" /><figcaption aria-hidden="true">树</figcaption>
+</figure>
+<h3 id="图">图</h3>
+<p>图的情况的复杂性在于它可以有环。</p>
+<blockquote>
+<p><strong><em>Fusion Principle</em></strong>: The vertices on any circuit may be fused without changing the Sprague-Grundy value of the graph.</p>
+</blockquote>
+<p>也就是说，我们可以将环上任意两个点合并。而所有环上的点合并后，环上的一条边就变成了一条自环，而一条自环可以用一条边连着一个新点来代替。比如：</p>
+<p><img src="/uploads/hackenbush1.png" /></p>
+<p>证明：我们称合并后 <span class="math inline">\(sg\)</span> 值不变的图是好的，改变了的图是坏的。假如存在坏的图，那么选择一个边数最少（假设为 <span class="math inline">\(m\)</span> ）并且拥有最少点数（这里，我们将 ground 当成一个点）的坏图，删除它的任意一条边都会使其变成好图，任何一次合并操作都会改变它的 <span class="math inline">\(sg\)</span> 值。那么有以下推论：</p>
+<ol type="1">
+<li><span class="math inline">\(G\)</span> 中不存在一对点 <span class="math inline">\(x,y\)</span> 之间有三条或以上不相交的简单路径。否则，将合并 <span class="math inline">\(x,y\)</span> 后的 <span class="math inline">\(G\)</span> 称之为 <span class="math inline">\(H\)</span> ，<span class="math inline">\(H\)</span> 和 <span class="math inline">\(G\)</span> 的 <span class="math inline">\(sg\)</span> 值不同，所以 <span class="math inline">\(G+H\)</span> 必然是先手必胜的。所以当先手删除了 <span class="math inline">\(G\)</span> 或 <span class="math inline">\(H\)</span> 中的一条边使得 <span class="math inline">\(sg\)</span> 变成 <span class="math inline">\(0\)</span> ，后手也在另一个图中删除了相应的那条边，使两个图变成拥有 <span class="math inline">\(m-1\)</span> 条边的图 <span class="math inline">\(G&#39;\)</span> 和 <span class="math inline">\(H&#39;\)</span> ，此时 <span class="math inline">\(G&#39;+H&#39;\)</span> 也是先手必胜，并且它们都是好的，然而，由于 <span class="math inline">\(x\)</span> 和 <span class="math inline">\(y\)</span> 之间存在三条不相交的路径，无论在 <span class="math inline">\(G\)</span> 中如何删除，都会使得 <span class="math inline">\(x\)</span> 和 <span class="math inline">\(y\)</span> 仍然在一个环上，此时在 <span class="math inline">\(G&#39;\)</span> 中合并 <span class="math inline">\(x\)</span> 和 <span class="math inline">\(y\)</span> ，就会变成 <span class="math inline">\(H&#39;\)</span> ，这与 <span class="math inline">\(G&#39;+H&#39;\)</span> 是先手必胜相矛盾。</li>
+<li><span class="math inline">\(G\)</span> 中的环都必须包含 ground 这个点。假设 <span class="math inline">\(G\)</span> 中存在不包含 ground 的环 <span class="math inline">\(C\)</span> ，那么设 <span class="math inline">\(G&#39;\)</span> 为 <span class="math inline">\(G\)</span> 删除所有 <span class="math inline">\(C\)</span> 中的边后的图（其他在删除后未与 ground 相连的部分也一并删去了），那么 <span class="math inline">\(G&#39;\)</span> 只剩下 <span class="math inline">\(C\)</span> 中的一个点，如果剩下两个或以上，违背上一条推论（两个点通过 <span class="math inline">\(C\)</span> 有两条路径相连，通过 <span class="math inline">\(G&#39;\)</span> 也有一条路径相连）。所以，<span class="math inline">\(C\)</span> 以及其他一并删去的部分与 <span class="math inline">\(G&#39;\)</span> 之间仅通过一个点相连，通过 Colon Principle，我们可以将删去的部分（设为 <span class="math inline">\(C&#39;\)</span> ，显然他们是好的，可以合并）变成一条长为其 <span class="math inline">\(sg\)</span> 值的链与 <span class="math inline">\(G&#39;\)</span> 相连构成一个 <span class="math inline">\(G&#39;&#39;\)</span>，和原本的图 <span class="math inline">\(G\)</span> 的 <span class="math inline">\(sg\)</span> 值相等，也就是说，<span class="math inline">\(G\)</span> 在一系列包括合并 <span class="math inline">\(C\)</span> 的变换后形成的 <span class="math inline">\(G&#39;&#39;\)</span> 与 <span class="math inline">\(G\)</span> 的 <span class="math inline">\(sg\)</span> 相同，这显然矛盾了。</li>
+<li><span class="math inline">\(G\)</span> 中只有一个环包含 ground，即，<span class="math inline">\(G\)</span> 中只包含一个环。如果存在两个或以上，他们的交点必须只有 ground，否则与推论 1 矛盾，这种情况下，将其分成几个图，各自都是好的，这与假设矛盾。</li>
+</ol>
+<p>基于以上几个推论，最小的坏的图只可能是一个包含 ground 的环，环上的点再挂一些树，而基于 Colon Principle，树都能被链替换。如果仍将 ground 看成线，那么这样的图将呈现出“桥”的形状，如下图所示，因此我们也将这个环称之为桥。接下来，我们要证明这样的 <span class="math inline">\(G\)</span> 是好的。</p>
+<p>当 <span class="math inline">\(m\)</span> 为偶数时，如图，设右边为合并了桥后的图 <span class="math inline">\(G&#39;\)</span> ，如果证明了 <span class="math inline">\(G+G&#39;\)</span> 的 <span class="math inline">\(sg\)</span> 值为 0，就可以证明 <span class="math inline">\(G\)</span> 是好的。如果先手删除一个图的非桥边，后手只需删除另一个图对应的边即可。如果先手删除了一条桥上的边，变成了树的情况，将使剩下的边数变为奇数，<span class="math inline">\(sg\)</span> 值也肯定是奇数（仔细想想，这其实很显然），必然不为 <span class="math inline">\(0\)</span> ，因此后手必胜。</p>
+<p><img src="/uploads/hackenbush2.png" /></p>
+<p>当 <span class="math inline">\(m\)</span> 为奇数时，如图，证明 <span class="math inline">\(G+G&#39;\)</span> 的 <span class="math inline">\(sg\)</span> 值为 <span class="math inline">\(0\)</span> 即可。删链上边和桥上边的情况同理，只需考虑先手删除的是单独的那条边。考虑如果 <span class="math inline">\(G\)</span> 桥上某个点挂的链是奇数长度，设为 <span class="math inline">\(2a+1\)</span> ，那么删除它末端的边将其变成偶数长度，由于该图边数少于 <span class="math inline">\(G\)</span>，它是个好图，可以合并，而合并后，其他的链抵消，总的 <span class="math inline">\(sg\)</span> 值显然为 <span class="math inline">\(2a\oplus (2a+1)\oplus 1=0\)</span> ，其中的 <span class="math inline">\(1\)</span> 是合并奇数长度桥所产生的。因此，只需考虑所有的链都是偶数长度的情况。</p>
+<p><img src="/uploads/hackenbush3.png" /></p>
+<p>将所有桥上边黑白染色，使得桥中间的边为白色，相邻边不同色，那么白边数量为奇数，黑边数量为偶数。如果删除一条白色的边，将桥分割为两棵树，每棵树的 <span class="math inline">\(sg\)</span> 值都是这样的形式： <span class="math display">\[
+2a+1\oplus 2b+1\oplus 2c+1\oplus 2d+1\oplus \dots
+\]</span> 这里，我们假定 <span class="math inline">\(+\)</span> 和 <span class="math inline">\(\oplus\)</span> 拥有同样的运算优先级，因此上面的式子是从左往右依次运算的。注意到，奇数次出现的 <span class="math inline">\(+1\)</span> 都和 <span class="math inline">\(\oplus 1\)</span> 等效（因为，前面运算的结果都是偶数），因此，也可以将上式写成： <span class="math display">\[
+\begin{aligned} 
+res&amp;=2a\oplus1\oplus 2b+1\oplus 2c\oplus 1\oplus 2d+1\oplus \dots \\
+&amp;=2a\oplus2b\oplus1+1\oplus 2c\oplus 2d\oplus 1+1\oplus  \dots\\
+&amp;=2a\oplus2b+1+1\oplus 2c\oplus 2d+1+1\oplus  \dots\\
+&amp;=2a\oplus2b+2\oplus 2c\oplus 2d+2\oplus  \dots
+\end{aligned}
+\]</span> 若桥上边数模 <span class="math inline">\(4\)</span> 余 <span class="math inline">\(1\)</span> ，删除一条白边后两棵树剩余的桥边都为偶数，那么 <span class="math inline">\(res\)</span> 的值为偶数，而将其除二后，为 <span class="math inline">\(a\oplus b+1\oplus c\oplus d+1\oplus \dots\)</span> 。这等价于，将原图中链长度减半并合并所有黑边，称之为减半后的图 <span class="math inline">\(\frac{G}{2}\)</span>，再删除那条白边形成的树所计算出的 <span class="math inline">\(sg\)</span> 值。若桥上边数模 <span class="math inline">\(4\)</span> 余 <span class="math inline">\(3\)</span> ，则 <span class="math inline">\(res\)</span> 是 <span class="math inline">\(\frac{G}{2}\)</span> 删除这条边后树的 <span class="math inline">\(sg\)</span> 值的两倍再 <span class="math inline">\(+1\)</span> 。</p>
+<p>除非桥边数为 <span class="math inline">\(1\)</span> ，这种情况显然 <span class="math inline">\(G\)</span> 是好的，否则 <span class="math inline">\(\frac{G}{2}\)</span> 边数必然小于 <span class="math inline">\(G\)</span> ，它应该是好的，且桥上边数为奇数，所以，<span class="math inline">\(\frac{G}{2}+(\frac{G}{2})&#39;\)</span> 的 <span class="math inline">\(sg\)</span> 为 <span class="math inline">\(0\)</span> ，如果先手删除单独那条边，剩余的 <span class="math inline">\(sg\)</span> 为 <span class="math inline">\(1\)</span> ，也就是说，后手无论如何都存在删除 <span class="math inline">\(\frac{G}{2}\)</span> 中的一条边的必胜策略。若后手的必胜策略是删桥边，在 <span class="math inline">\(G\)</span> 中删除对应的一条白边，那么显然，形成的两棵树的 <span class="math inline">\(sg\)</span> 值在原图和减半图中是两倍关系或者两倍加一关系，因此总的 <span class="math inline">\(sg\)</span> 值也是两倍关系，都为 <span class="math inline">\(0\)</span> （思考下，若 <span class="math inline">\(a\oplus b\oplus c=0\)</span> ，那么 <span class="math inline">\((2a+1)\oplus (2b+1)\oplus 2c=(2a\oplus 1)\oplus (2b\oplus 1)\oplus 2c=0\)</span>）。若删除的是链上的边，那么，让 <span class="math inline">\(G\)</span> 对应的链仍保持 <span class="math inline">\(\frac{G}{2}\)</span> 这条链的两倍，显然，这之后的图是好的，且通过合并可以知道总的 <span class="math inline">\(sg\)</span> 值仍是两倍关系。因此，<span class="math inline">\(G+G&#39;\)</span> 为先手必败，其 <span class="math inline">\(sg\)</span> 值为 <span class="math inline">\(0\)</span> 。</p>
+<p>综上所述，我们通过反证法证明了不存在坏的图，所有的图都是可合并的。</p>
+<h2 id="blue-red-hackenbush">Blue-Red Hackenbush</h2>
+<p>Blue-Red Hackenbush 属于不平等博弈，无法继续用上面的办法来解决这个问题，但是有的思想还是可以沿用。</p>
+<p>以下为了简便，称只能删除蓝色边的为 L，只能删除红色边的为 R。</p>
+<p><img src="/uploads/hackenbush4.png" /></p>
+<p>如上图，红色边有 <span class="math inline">\(10\)</span> 条，而蓝色边只有 <span class="math inline">\(4\)</span> 条，显然，只能删红色边的 R 必胜。</p>
+<p><img src="/uploads/hackenbush5.png" /></p>
+<p>如上图，无论先手如何删边，后手都能复制其操作，因此是一个后手必胜的状态，我们称这种后手必胜的游戏为 <strong>zero games</strong> 。</p>
+<p>显然，当红色蓝色的边都是分离的时候，通过计算蓝色边数减红色边数，即可知道胜负状态，如果是正的，那么 L 必胜，如果是负的，那么 R 必胜，如果为零，那么后手必胜。那么，是不是我们可以用一个数字来代表一个游戏的<strong>值</strong>，游戏的和的值通过加减计算，并通过值的正负来判断胜负状态呢。</p>
+<p>当两种边不再分离，让我们看看会发生什么，先从简单的情况入手，对于下面三种情况来说，不难发现，分别是 L 必胜，R 必胜和后手必胜。</p>
+<p><img src="/uploads/hackenbush6.png" /></p>
+<ul>
+<li>对于 (a)，L 必胜，假定这个游戏的值为 <span class="math inline">\(x\)</span> ，有 <span class="math inline">\(x\gt 0\)</span> 。</li>
+<li>对于 (b)，R 必胜，所以有 <span class="math inline">\(x-1\lt 0\)</span> ，那么有 <span class="math inline">\(0\lt x\lt 1\)</span> 。</li>
+<li>对于 (c)，为 zero game，所以有 <span class="math inline">\(x+x-1=0\)</span> ，因此可以得到 <span class="math inline">\(x=\frac{1}{2}\)</span> 。</li>
+</ul>
+<p>假设一个图 <span class="math inline">\(P\)</span> ，由 L 操作产生的任意一个后续状态为 <span class="math inline">\(P^L\)</span> ，由 R 操作产生的任意一个后续状态为 <span class="math inline">\(P^R\)</span> ，<span class="math inline">\(P\)</span> 可以通过在 <span class="math inline">\(P^L\)</span> 上加上一条蓝边以及连接在这条蓝边上的其他边得到的，那么有 <span class="math inline">\(P&gt;P^L\)</span> ，即（以下不再区分图以及图的值）： <span class="math display">\[
+P^L&lt;P&lt;P^R\quad \text{for all}\  P^L,P^R
+\]</span> （证明 <span class="math inline">\(P&gt;P^L\)</span> 并不难，假设有一个和 <span class="math inline">\(P^L\)</span> 颜色相反的图 <span class="math inline">\(-P^L\)</span> ，那么容易得到 <span class="math inline">\(P+(-P^L)\)</span> 为 L 必胜 ）</p>
+<p>因此，<span class="math inline">\(P\)</span> 是介于 <span class="math inline">\(P^L\)</span> 的最大值以及 <span class="math inline">\(P^R\)</span> 的最小值之间的。</p>
+<p>设 <span class="math inline">\(P\)</span> 为：<span class="math inline">\(\{P^L_1,P^L_2,\dots|P^R_1,P^R_2,\dots\}\)</span> ，其中 <span class="math inline">\(|\)</span> 左边为 L 操作能到达的状态，右边为 R 操作能到达的状态，且 <span class="math inline">\(P^L\)</span> 为所有 <span class="math inline">\(P^L_i\)</span> 的最大值，<span class="math inline">\(P^R\)</span> 为所有 <span class="math inline">\(P^R_i\)</span> 的最小值，那么 <span class="math inline">\(P\)</span> 和 <span class="math inline">\(P&#39;=\{P^L|P^R\}\)</span> 等价。</p>
+<p>证明：设 <span class="math inline">\(P&#39;\)</span> 颜色相反的图 <span class="math inline">\(-P&#39;=\{-P^R|-P^L\}\)</span> ，有 <span class="math inline">\(P+(-P&#39;)\)</span> 这个游戏，不失一般性的假设 L 先手，若它选择一个后续状态 <span class="math inline">\(P^L_i+(-P&#39;)\)</span> ，且 <span class="math inline">\(P_i^L&lt;P^L\)</span> ，那么 R 将游戏操作为 <span class="math inline">\(P^L_i+(-P^L)&lt;0\)</span> ，R 必胜，因此 L 必不可能选择这样一个操作。而如果 L 选择 <span class="math inline">\(P^L\)</span> ，则后手操作为 <span class="math inline">\(P^L+(-P^L)=0\)</span> 。如果 L 选择操作 <span class="math inline">\(-P&#39;\)</span> 变为 <span class="math inline">\(-P^R\)</span> ，R 只能选择后续状态为 <span class="math inline">\(P^R+(-P^R)=0\)</span> 。因此 <span class="math inline">\(P+(-P&#39;)=0\)</span> ，故 <span class="math inline">\(P=P&#39;\)</span> 。</p>
+<h3 id="surreal-number">Surreal Number</h3>
+<p>中文译作超现实数，最早由 John Horton Conway 定义和构造，并在著作《 论数字与博弈》（On Numbers and Games） 中进行了描述。这是一套全新的数学系统，你必须忘记所有你之前知道的关于“数”的概念，包括数的大小等于关系！当然，如果你有基础，可以从代数的角度去理解它。</p>
+<h4 id="构造">构造</h4>
+<p>超现实数的构造方法是递归的，设 <span class="math inline">\(L\)</span> 和 <span class="math inline">\(R\)</span> 是两个超现实数的集合，并且<strong>不</strong>存在 <span class="math inline">\(x\ge y,x\in L,y\in R\)</span> （这里 <span class="math inline">\(\ge\)</span> 的定义稍后给出），那么 <span class="math inline">\(\{L|R\}\)</span> 也是一个超现实数。例如，<span class="math inline">\(\{\varnothing|\varnothing\}\)</span> 就是一个最简单的超现实数，它也是构造一切超现实数的起点。</p>
+<h4 id="约定">约定</h4>
+<p>设一个超现实数 <span class="math inline">\(x=\{L|R\}\)</span> ，我们用 <span class="math inline">\(x^L\)</span> 表示 <span class="math inline">\(L\)</span> 中的元素，<span class="math inline">\(x^R\)</span> 来表示 <span class="math inline">\(R\)</span> 中的元素，并且将 <span class="math inline">\(x\)</span> 写作 <span class="math inline">\(\{x^L|x^R\}\)</span> 。即，若 <span class="math inline">\(L=\{a,b,c,\dots\},R=\{d,e,f,\dots\}\)</span> ，那么 <span class="math inline">\(x=\{L|R\}\)</span> 写作 <span class="math inline">\(\{a,b,c,\dots|d,e,f,\dots\}\)</span> 。</p>
+<h4 id="定义">定义</h4>
+<h5 id="定义-xge-yxle-y">定义 <span class="math inline">\(x\ge y,x\le y\)</span> 。</h5>
+<p><span class="math inline">\(x\ge y\)</span> 当且仅当 <span class="math inline">\(\forall x^R,x^R\nleq y\)</span> 且 <span class="math inline">\(\forall y^L, x\nleq y^L\)</span> 。简单的说，就是不存在 <span class="math inline">\(x^R\le y\)</span> 且不存在 <span class="math inline">\(x\le y^L\)</span> 。</p>
+<p><span class="math inline">\(x\leq y\)</span> 当且仅当 <span class="math inline">\(y\leq x\)</span> 。即 <span class="math inline">\(x^L\ngeq y\)</span> 且 <span class="math inline">\(x\ngeq y^R\)</span> 。</p>
+<p>其中 <span class="math inline">\(x\nleq y\)</span> 即 <span class="math inline">\(x\le y\)</span> 不成立。</p>
+<p>可以发现，这里的定义也是递归的。</p>
+<p>一个显而易见的结论：若不存在 <span class="math inline">\(x^R\)</span> 且不存在 <span class="math inline">\(y^L\)</span> ，那么 <span class="math inline">\(x\ge y\)</span> 必然成立。</p>
+<h5 id="定义-xyxyxy">定义 <span class="math inline">\(x=y,x&gt;y,x&lt;y\)</span> 。</h5>
+<p><span class="math inline">\(x=y\)</span> 当且仅当 <span class="math inline">\(x\ge y\)</span> 且 <span class="math inline">\(x\le y\)</span> 。</p>
+<p><span class="math inline">\(x&gt;y\)</span> 当且仅当 <span class="math inline">\(x\ge y\)</span> 且 <span class="math inline">\(x\nleq y\)</span> 。</p>
+<p><span class="math inline">\(x&lt;y\)</span> 当且仅当 <span class="math inline">\(y&gt;x\)</span> 。</p>
+<h5 id="定义-xy">定义 <span class="math inline">\(x+y\)</span> 。</h5>
+<p><span class="math inline">\(x+y=\{x^L+y,x+y^L|x^R+y,x+y^R\}\)</span> 。</p>
+<h5 id="定义--x">定义 <span class="math inline">\(-x\)</span> 。</h5>
+<p><span class="math inline">\(-x=\{-x^R|-x^L\}\)</span> 。</p>
+<h5 id="定义-xy-1">定义 <span class="math inline">\(xy\)</span> 。</h5>
+<p><span class="math inline">\(xy=\{x^Ly+xy^L-x^Ly^L,x^Ry+xy^R-x^Ry^R|x^Ly+xy^R-x^Ly^R,x^Ry+xy^L-x^Ry^L\}\)</span></p>
+<h4 id="用有理数来表示超现实数">用有理数来表示超现实数</h4>
+<p>我们想要用一个具体的数来代表一个超现实数。首先，令 <span class="math inline">\(\{\varnothing|\varnothing\}=\{|\}=0\)</span> 。可以发现，<span class="math inline">\(0\ge 0\)</span> 。</p>
+<p>那么 <span class="math inline">\(\{0|\},\{|0\},\{0|0\}\)</span> 呢？首先注意，由于 <span class="math inline">\(0\ge 0\)</span> ，<span class="math inline">\(\{0|0\}\)</span> 是不符合定义的，不属于超现实数。再根据定义有 <span class="math inline">\(\{0|\}\ge 0\)</span> 且 <span class="math inline">\(\{0|\}\nleq 0\)</span> ，即 <span class="math inline">\(\{0|\}&gt;0\)</span> ，同理可得 <span class="math inline">\(\{|0\}&lt;0&lt;\{0|\}\)</span> 。那么令 <span class="math inline">\(\{0|\}=1\)</span> ，<span class="math inline">\(\{|0\}=-1\)</span> 。</p>
+<p>现在，我们有了三个超现实数 <span class="math inline">\(-1,0,1\)</span> ，它们可以组合成 <span class="math inline">\(8\)</span> 个集合： <span class="math display">\[
+\{\},\{-1\},\{0\},\{1\},\{-1,0\},\{-1,1\},\{0,1\},\{-1,0,1\}
+\]</span> 我们可以用这些集合作为 <span class="math inline">\(L\)</span> 和 <span class="math inline">\(R\)</span> 继续构造超现实数，但符合定义的只有： <span class="math display">\[
+\{|R\},\{L|\},\{-1|0\},\{-1|0,1\},\{-1|1\},\{0|1\},\{-1,0|1\}
+\]</span> 可以证明，<span class="math inline">\(\{1|\}&gt;1\)</span> ，因此我们令 <span class="math inline">\(\{1|\}=2\)</span> ，而 <span class="math inline">\(0&lt;\{0|1\}&lt;1\)</span> ，令 <span class="math inline">\(\{0|1\}=\frac{1}{2}\)</span> ，同理有 <span class="math inline">\(\{|-1\}=-2,\{-1|0\}=-\frac{1}{2}\)</span> 。而 <span class="math inline">\(\{0,1|\}\)</span> 又是多少呢？可以发现 <span class="math inline">\(\{0,1|\}\ge \{1|\}\)</span> 且 <span class="math inline">\(\{0,1|\}\le \{1|\}\)</span> ，所以有 <span class="math inline">\(\{0,1|\}=\{1|\}=2\)</span> 。同理，可以得到： <span class="math display">\[
+\begin{aligned}
+-2&amp;=\{|-1\}=\{|-1,0\}=\{|-1,1\}=\{|-1,0,1\}\\
+-1&amp;=\{|0\}=\{|0,1\}\\
+-\tfrac{1}{2}&amp;=\{-1|0\}=\{-1|0,1\}\\
+0&amp;=\{|\}=\{-1|\}=\{|1\}=\{-1|1\}\\
+\tfrac{1}{2}&amp;=\{0|1\}=\{-1,0|1\}\\
+1&amp;=\{0|\}=\{-1,0|\}\\
+2&amp;=\{1|\}=\{0,1|\}=\{-1,1|\}=\{-1,0,1|\}
+\end{aligned}
+\]</span></p>
+<p>而根据这些新的超现实数，我们又可以得到更多的超现实数，如果称 <span class="math inline">\(0\)</span> 是第一天“出生”的数，<span class="math inline">\(-1\)</span> 和 <span class="math inline">\(1\)</span> 是第二天出生的数，上面几个数是第三天出生的数，那么假设 <span class="math inline">\(x^L\)</span> 和 <span class="math inline">\(x^R\)</span> 最大的出生日期是 <span class="math inline">\(k\)</span> ，我们称 <span class="math inline">\(x\)</span> 为第 <span class="math inline">\(k+1\)</span> 出生的。</p>
+<p>不过，让我们暂且停下来，讨论点别的，毕竟这种“代表”只是我们的一种假设，它是否合理还有待验证。</p>
+<h4 id="一些定理">一些定理</h4>
+<blockquote>
+<p>定理 0：对于一个超现实数 <span class="math inline">\(x\)</span> ，有：</p>
+<ol type="1">
+<li><span class="math inline">\(x\ngeq x^R\)</span> ,</li>
+<li><span class="math inline">\(x^L\ngeq x\)</span> ,</li>
+<li><span class="math inline">\(x\ge x\)</span> ,</li>
+<li><span class="math inline">\(x=x\)</span> .</li>
+</ol>
+</blockquote>
+<p>似乎证明这个很简单：</p>
+<ol type="1">
+<li>令 <span class="math inline">\(y=x^R\)</span> ，那么有 <span class="math inline">\(x^R\leq y\)</span> ，这里假设我们证明了 <span class="math inline">\(x^R\le x^R\)</span> ，那么有 <span class="math inline">\(x\ngeq y\)</span> 。</li>
+<li>同理。</li>
+<li>令 <span class="math inline">\(y=x\)</span> ，那么 <span class="math inline">\(x^R\nleq y\)</span> 且 <span class="math inline">\(x\nleq y^L\)</span> 。</li>
+<li>因为 <span class="math inline">\(x\ge x\)</span> 且 <span class="math inline">\(x\le x\)</span> ，所以 <span class="math inline">\(x=x\)</span> 。</li>
+</ol>
+<p>看起来一切很美妙，但我们发现一个奇怪的事：要证明 <span class="math inline">\(x\ngeq x^R\)</span> 和 <span class="math inline">\(x^L \ngeq x\)</span> 就必须证明 <span class="math inline">\(x^R\ge x^R\)</span> 和 $x<sup>Lx</sup>L $ ，而证明 <span class="math inline">\(x^R\ge x^R\)</span> 即证明 <span class="math inline">\(x\ge x\)</span> ，又需要前面两个结论——发生了循环论证。</p>
+<p>由于超现实数递归的本质，我们要证明关于它的结论，最好的办法就是数学归纳法。注意到，对于简单的情况，例如 <span class="math inline">\(x=\{\varnothing|\varnothing\}=0\)</span> ——所有超现实数的起源，这是成立的。因此，假设比 <span class="math inline">\(x\)</span> 更早出生的数 <span class="math inline">\(x^L\)</span> 和 <span class="math inline">\(x^R\)</span> 都满足上述定理，那么根据上述证明显然 <span class="math inline">\(x\)</span> 也满足。</p>
+<blockquote>
+<p>定理 1：若 <span class="math inline">\(x\ge y\)</span> 且 <span class="math inline">\(y\ge z\)</span> ，那么有 <span class="math inline">\(x\ge z\)</span> 。（即 <span class="math inline">\(\ge\)</span> 关系的传递性）</p>
+</blockquote>
+<p>证明：同样使用数学归纳法。设 <span class="math inline">\(\alpha=\{|\}\)</span> ，令 <span class="math inline">\(\beta=\{\alpha|\},\gamma=\{|\alpha\}\)</span> ，那么有 <span class="math inline">\(\beta\ge \alpha\)</span> 和 <span class="math inline">\(\alpha\ge \gamma\)</span> ，同时我们也能证明 <span class="math inline">\(\beta\ge \gamma\)</span> ，显然这三个数任意组合都是满足这个定理的。</p>
+<p>设 <span class="math inline">\(x,y,z\)</span> 的出生日期之和为 <span class="math inline">\(n\)</span> ，且我们已经证明了出生日期之和小于 <span class="math inline">\(n\)</span> 的三元组都满足这个定理，那么若 <span class="math inline">\(x\ngeq z\)</span> ，则有 <span class="math inline">\(x^R\le z\)</span> 或 <span class="math inline">\(x\le z^L\)</span> 成立：</p>
+<ul>
+<li>若 <span class="math inline">\(x^R\le z\)</span> ，且 <span class="math inline">\(z\le y\)</span> ， <span class="math inline">\(y,z,x^R\)</span> 的出生日期之和小于 <span class="math inline">\(n\)</span> ，那么 <span class="math inline">\(x^R\le y\)</span> ，所以 <span class="math inline">\(x\ngeq y\)</span> ，矛盾。</li>
+<li>若 <span class="math inline">\(x\le z^L\)</span> ，且 <span class="math inline">\(y\le x\)</span> ， <span class="math inline">\(z^L,x,y\)</span> 的出生日期之和小于 <span class="math inline">\(n\)</span> ，那么 <span class="math inline">\(y\le z^L\)</span> ，所以 <span class="math inline">\(y\ngeq z\)</span> ，矛盾。</li>
+</ul>
+<p>故 <span class="math inline">\(x^R\nleq z\)</span> 且 <span class="math inline">\(x\nleq z^L\)</span> ，所以 <span class="math inline">\(x\ge z\)</span> 。</p>
+<blockquote>
+<p>定理 2：若 <span class="math inline">\(x\ngeq y\)</span> ，则 <span class="math inline">\(x\le y\)</span> 。</p>
+</blockquote>
+<p>这看上去很显然，但我们前面说过，这是一套新的数学系统，因此我们需要严谨的证明它。</p>
+<p>在此之前，我们先证明 <span class="math inline">\(x^L\le x\le x^R\)</span> 。要证明 <span class="math inline">\(x\ge x^L\)</span> ，即证明 <span class="math inline">\(x^R\nleq x^L\)</span> 且 <span class="math inline">\(x\nleq (x^L)^L\)</span> ，前者显然是成立的（根据定义）， 而后者，根据归纳假设，有 <span class="math inline">\(x^L\ge (x^L)^L\)</span> ，那么若存在 <span class="math inline">\(x\le (x^L)^L\)</span> ，则有 <span class="math inline">\(x^L\ge x\)</span> ，与定理 0 矛盾，因此 <span class="math inline">\(x^L\le x\)</span> 成立，同理可得 <span class="math inline">\(x\le x^R\)</span> 成立。更进一步，有 <span class="math inline">\(x^L\lt x\lt x^R\)</span> 。</p>
+<p>若 <span class="math inline">\(x\ngeq y\)</span> ，那么存在 <span class="math inline">\(x^R\le y\)</span> 或者 <span class="math inline">\(x\le y^L\)</span> ，对于前者，由于 <span class="math inline">\(x\le x^R\)</span> ，那么根据传递性有 <span class="math inline">\(x\le y\)</span> ，对于后者，由于 <span class="math inline">\(y^L\le y\)</span> ，根据传递性也有 <span class="math inline">\(x\le y\)</span> 。进一步的，有 <span class="math inline">\(x\lt y\)</span> ，此时超现实数的定义我们就可以说成”左集合的所有数都小于右集合“了， <span class="math inline">\(\ngeq\)</span> 也可以直接用 <span class="math inline">\(\lt\)</span> 来代替了。</p>
+<p>但是，“若 <span class="math inline">\(x\ge y\)</span> 则 <span class="math inline">\(x\nleq y\)</span> ”是错的，<span class="math inline">\(x\ge y\)</span> 和 <span class="math inline">\(x\le y\)</span> 可能同时成立，根据之前的定义我们称之为 <span class="math inline">\(x=y\)</span> ，但这并不就意味着 <span class="math inline">\(x\)</span> 和 <span class="math inline">\(y\)</span> 是完全相同的（例如 <span class="math inline">\(\{|0\}=\{|0,1\}\)</span>），应该称之为相似，或者说，它们属于等价类。不过为了简便，我们都称之为相等。</p>
+<p>所以，超现实数集满足反对称性、传递性和完全性，有全序关系。进一步的，它还满足严格全序关系。</p>
+<h4 id="关于加法和--x">关于加法和 <span class="math inline">\(-x\)</span></h4>
+<p>在上面我们定义了超现实数的加法：</p>
+<p><span class="math inline">\(x+y=\{x^L+y,x+y^L|x^R+y,x+y^R\}\)</span> 。</p>
+<p>但两个数相加产生的数是否还满足超现实数的定义呢？我们需要证明这一点。</p>
+<p>首先来试试这种加法运算，还是设 <span class="math inline">\(\alpha=\{|\}\)</span> ，令 <span class="math inline">\(\beta=\{\alpha|\},\gamma=\{|\alpha\}\)</span> ，发现 <span class="math inline">\(\alpha+\alpha=\{|\}=\alpha\)</span> ，<span class="math inline">\(\alpha+\beta=\{\alpha+\alpha|\}=\beta\)</span> ，<span class="math inline">\(\alpha+\gamma=\{|\alpha+\alpha\}=\gamma\)</span> 。看上去对于简单的情况都是 ok 的。</p>
+<p>那么对于复杂的情况呢？我们还没法证明加法的结果就是数因为可能存在左集合数大于等于右集合数的情况，让我们称这种数为“伪数”。</p>
+<blockquote>
+<p>定理 0：<span class="math inline">\(\alpha+x=x\)</span> 。</p>
+</blockquote>
+<p>我们已经证明了 <span class="math inline">\(\alpha+\alpha\)</span> 以及 <span class="math inline">\(\alpha+\beta,\alpha+\gamma\)</span> 的情况，假设对于 <span class="math inline">\(x^L\)</span> 和 <span class="math inline">\(x^R\)</span> 都成立，那么 <span class="math inline">\(\alpha+x=\{\alpha+x^L|\alpha+x^R\}=\{x^L|x^R\}=x\)</span> 。</p>
+<p>同理，我们还能证明 <span class="math inline">\(x+\alpha=x\)</span> ，所以 <span class="math inline">\(\alpha\)</span> 其实就是超现实数在加法操作中的零元！这个时候，我们有理由说令 <span class="math inline">\(\{|\}=0\)</span> 是合理的了。</p>
+<p>此定理对于伪数同样成立。</p>
+<blockquote>
+<p>定理 1：<span class="math inline">\(x+y=y+x\)</span> ，即交换律</p>
+</blockquote>
+<p>可以先对 <span class="math inline">\(\beta+\gamma=\gamma+\beta\)</span> 进行验证，发现是满足的。</p>
+<p>假设 <span class="math inline">\(x^L,x^R,y^L,y^R\)</span> 都是满足的，那么：</p>
+<p><span class="math display">\[
+x+y=\{x^L+y,x+y^L|x^R+y,x+y^R\}​\\
+y+x=\{y+x^L,y^L+x|y+x^R,y^R+x\}
+\]</span></p>
+<p>根据归纳假设，其左集合和右集合元素完全相同，因此 <span class="math inline">\(x+y=y+x\)</span> 。</p>
+<p>此定理对于伪数也同样成立。</p>
+<blockquote>
+<p>定理 2：<span class="math inline">\((x+y)+z=x+(y+z)\)</span> ，即结合律</p>
+</blockquote>
+<p><span class="math display">\[
+\begin{aligned}
+(x+y)+z&amp;=\{x^L+y,x+y^L|x^R+y,x+y^R\}+z\\
+&amp;=\{x^L+y+z,x+y^L+z,x+y+z^L|x^R+y+z,x+y^R+z,x+y+z^R\}
+\end{aligned}
+\]</span></p>
+<p>而 <span class="math inline">\(x+(y+z)\)</span> 结果的表达式不再写出，相信你根据上式已经了解，同样使用归纳法可以证明其相等。</p>
+<p>此定理对于伪数也同样成立。</p>
+<blockquote>
+<p>定理 3：若 <span class="math inline">\(x\ge y\)</span> 且 <span class="math inline">\(p\ge q\)</span> ，那么 <span class="math inline">\(x+p\ge y+q\)</span> 。</p>
+<p>引理：若 <span class="math inline">\(x+p\ge y+q\)</span> 且 <span class="math inline">\(p\le q\)</span> ，那么 <span class="math inline">\(x\ge y\)</span> 。</p>
+</blockquote>
+<p>我们可以同时对定理和引理进行归纳证明。</p>
+<p>证明此定理即证明 <span class="math inline">\(x^R+p\nleq y+q\)</span> ，<span class="math inline">\(x+p^R\nleq y+q\)</span> ，<span class="math inline">\(x+p\nleq y^L+q\)</span> ，<span class="math inline">\(x+p\nleq y+q^L\)</span> 。</p>
+<p>对于 <span class="math inline">\(x^R+p\nleq y+q\)</span> ，假设存在 <span class="math inline">\(y+q\ge x^R+p\)</span> ，因为 <span class="math inline">\(q\le p\)</span> ，根据引理的归纳假设，有 <span class="math inline">\(y\ge x^R\)</span> ，又 <span class="math inline">\(x\ge y\)</span> ，根据传递性 <span class="math inline">\(x\ge x^R\)</span> ，而我们已经证明了这是不可能的。对于另外三个同理可证。</p>
+<p>而对于引理，若 <span class="math inline">\(x\ge y\)</span> 不成立，那么 <span class="math inline">\(x^R\le y\)</span> 或者 <span class="math inline">\(x\le y^L\)</span> 中至少有一种情况会出现，对于前者，因为 <span class="math inline">\(x^R\gt x\ge y\)</span> ，矛盾，对于后者，因为 <span class="math inline">\(x\ge y\gt y^L\)</span> ，矛盾。</p>
+<p>同时，我们还可以证明：若 <span class="math inline">\(x\ge y\)</span> 且 <span class="math inline">\(p\gt q\)</span> ，那么 <span class="math inline">\(x+p\gt y+q\)</span> 。首先 <span class="math inline">\(x+p\ge y+q\)</span> 是肯定的，要证明的是 <span class="math inline">\(x+p\nleq y+q\)</span> ，由于 <span class="math inline">\(x\ge y\)</span> ，若 <span class="math inline">\(x+p\leq y+q\)</span> ，那么必然有 <span class="math inline">\(p\leq q\)</span> ，这与假设矛盾。</p>
+<p>现在，再让我们回过头来看看加法的定义，同样使用归纳法，假设 <span class="math inline">\(x^L+y,x+y^L,x^R+y,x+y^R\)</span> 都是数，那么我们只需要证明 <span class="math inline">\(x^L+y,x+y^L\)</span> 都小于 <span class="math inline">\(x^R+y,x+y^R\)</span> 即可，这时候只要我们同时用归纳法证明定理 3 和加法即可。</p>
+<blockquote>
+<p>定理 4：<span class="math inline">\(x+(-x)=\alpha\)</span> ，即 <span class="math inline">\(-x\)</span> 为加法逆元。</p>
+</blockquote>
+<p>回顾一下，<span class="math inline">\(-x=\{-x^R|-x^L\}\)</span> ，那么有 <span class="math inline">\(-\alpha=\alpha\)</span> ，我们还发现 <span class="math inline">\(-\beta=\gamma\)</span> ，而 <span class="math inline">\(\beta+\gamma=\{\alpha+\gamma|\beta+\alpha\}=\{\gamma|\beta\}\)</span> ，而 <span class="math inline">\(\{\gamma|\beta\}\ge a\)</span> 且 <span class="math inline">\(a\ge\{\gamma|\beta\}\)</span> ，因此 <span class="math inline">\(\beta+\gamma=\alpha\)</span> 。</p>
+<p>对于一般的情况，<span class="math inline">\(x+(-x)=\{x^L+(-x),x+(-x^R)|x^R+(-x),x+(-x^L)\}\)</span> ，我们先证明它是大于等于 <span class="math inline">\(\alpha\)</span> 的，即证明 <span class="math inline">\(x^R+(-x)\gt\alpha\)</span> 且 <span class="math inline">\(x+(-x^L)\gt\alpha\)</span> ，对于前者， 由于 <span class="math inline">\(-x\gt -x^R\)</span> ，<span class="math inline">\(x^R+(-x)\gt x^R+(-x^R)\)</span> ，而根据归纳假设，后者等于 <span class="math inline">\(\alpha\)</span> ，对于 <span class="math inline">\(x+(-x^L)\gt \alpha\)</span> 的证明同理，故 <span class="math inline">\(x+(-x)\ge \alpha\)</span> ，同理可证 <span class="math inline">\(x+(-x)\le \alpha\)</span> ，故 <span class="math inline">\(x+(-x)=\alpha\)</span> 。此时我们也可以定义减法了：<span class="math inline">\(x-y\)</span> 即 <span class="math inline">\(x+(-y)\)</span> 。</p>
+<blockquote>
+<p>定理 5：<span class="math inline">\(-(x+y)=(-x)+(-y)\)</span> 。</p>
+<p>定理 6：若 <span class="math inline">\(x\le y\)</span> ，则 <span class="math inline">\(-y\le -x\)</span> 。</p>
+</blockquote>
+<p>证明方法都与上面类似，这里不再给出证明。</p>
+<h4 id="关于乘法和逆元">关于乘法和逆元</h4>
+<p>还记得乘法的定义吗：</p>
+<p><span class="math inline">\(xy=\{x^Ly+xy^L-x^Ly^L,x^Ry+xy^R-x^Ry^R|x^Ly+xy^R-x^Ly^R,x^Ry+xy^L-x^Ry^L\}\)</span></p>
+<p>同样，在我们证明它是个超现实数之前，先假定它就是个数。</p>
+<blockquote>
+<p>定理 0：<span class="math inline">\(xy=yx\)</span> ，即乘法的交换律。</p>
+</blockquote>
+<p>归纳即可。</p>
+<p>此定理对于伪数也同样成立。</p>
+<blockquote>
+<p>定理 1：<span class="math inline">\(0y=0\)</span> ，即零元。</p>
+</blockquote>
+<p>显然结果的左右集合都是空，再次印证了 <span class="math inline">\(\alpha\)</span> 为 <span class="math inline">\(0\)</span> 的合理性。</p>
+<p>此定理对于伪数也同样成立。</p>
+<blockquote>
+<p>定理 2：<span class="math inline">\(1y=y\)</span> ，即单位元。</p>
+</blockquote>
+<p><span class="math inline">\(1y=\{0y+1y^L-0y^L|0y+1y^R-0y^R\}=\{y^L|y^R\}=y\)</span> ，这里同样用到了归纳法。印证了 <span class="math inline">\(\beta\)</span> 作为 <span class="math inline">\(1\)</span> 的合理性。</p>
+<p>此定理对于伪数也同样成立。</p>
+<blockquote>
+<p>定理 3：<span class="math inline">\(-(xy)=(-x)y\)</span> 。</p>
+</blockquote>
+<p><span class="math display">\[
+\begin{aligned}
+(-x)y=\{-x^R|-x^L\}\times y
+=&amp;\{(-x^R)y+(-x)y^L-(-x^R)y^L,(-x^L)y+(-x)y^R-(-x^R)y^R| \\
+&amp;(-x^R)y+(-x)y^R-(-x^R)y^R,(-x^L)y+(-x)y^L-(-x^L)y^L\}
+\end{aligned}
+\]</span></p>
+<p>通过归纳法，可以得证。</p>
+<p>此定理对于伪数也同样成立。</p>
+<blockquote>
+<p>定理 4：<span class="math inline">\(x(y+z)=xy+xz\)</span> ，即对加法的分配律。</p>
+<p>定理 5：<span class="math inline">\(x(yz)=(xy)z\)</span> ，即乘法的结合律。</p>
+</blockquote>
+<p>证明方法也没什么特别的。</p>
+<p>此两条定理对于伪数也同样成立。</p>
+<blockquote>
+<p>定理 6：若 <span class="math inline">\(x\gt x&#39;\)</span> 且 <span class="math inline">\(y\gt y&#39;\)</span> ，那么 <span class="math inline">\((x-x&#39;)(y-y&#39;)\gt 0\)</span> 。</p>
+</blockquote>
+<p>首先要提出一点，无论乘法的结果是不是个数，定理 4 都是成立的。</p>
+<p>把乘法的定义和定理 6 一起来看：</p>
+<p>我们要证明乘法结果是数，那么就要证明其左集合的数小于右集合的数，例如：<span class="math inline">\(x^Ly+xy^L-x^Ly^L\lt x^Ly+xy^R-x^Ly^R\)</span> ，化简后得到：<span class="math inline">\((x-x^L)(y^R-y^L)\gt 0\)</span> 。</p>
+<p>另外三个式子为：<span class="math inline">\((x^R-x)(y^R-y^L)\gt 0,(x^R-x^L)(y-y^L)\gt 0,(x^R-x^L)(y^R-y)\gt 0\)</span> 。</p>
+<p>那么我们需要 <span class="math inline">\(xy^R,xy^L,x^Ry,x^Ly,x^Ly^R,x^Ly^L,x^Ry^R,x^Ry^L\)</span> 都是数，好在这可以通过归纳法来假设。</p>
+<p>那么，<span class="math inline">\((x-x^L)(y^R-y^L)\)</span> 等也必然是个数，</p>
+<h4 id="用有理数来表示超现实数-1">用有理数来表示超现实数</h4>
+<p>我们知道，用 <span class="math inline">\(0\)</span> 来表示 <span class="math inline">\(\alpha\)</span> 是合理的，因为它就是零元。至于用 <span class="math inline">\(1,-1\)</span> 来表示 <span class="math inline">\(\beta,\gamma\)</span> 的合理性，需要在我们讨论乘法时再说明。事实上，用什么数来表示 <span class="math inline">\(\beta,\gamma\)</span> 实际上无所谓，因为我们现在只涉及到加法，无非就是 <span class="math inline">\(1\)</span> 代表了一个单位而已，毕竟这里所谓的“合理”，指的是大小关系和运算结果都能对的上。</p>
+<blockquote>
+<p>定理 0：若 <span class="math inline">\(y^L\lt x\lt y^R\)</span> ，那么 <span class="math inline">\(x=\{x^L,y^L|x^R,y^R\}\)</span> 。</p>
+</blockquote>
+<p>令等式右边的数为 <span class="math inline">\(z\)</span> ，显然它满足“数”的定义，并且 <span class="math inline">\(x\ge z\)</span> 且 <span class="math inline">\(x\le z\)</span> 都很容易证明。</p>
+<p>同时，我们可以发现，若 <span class="math inline">\(x_{max}^L\)</span> 是 <span class="math inline">\(x^L\)</span> 中“最大”的那个数（因为是全序的），<span class="math inline">\(x_{min}^R\)</span> 为 <span class="math inline">\(x^R\)</span> 中最小的那个数，那么 <span class="math inline">\(x=\{x_{max}^L|x_{min}^R\}\)</span> 。利用此定理即可证。</p>
+<p>那么，假设我们在前 <span class="math inline">\(n\)</span> 天创造出了 <span class="math inline">\(m\)</span> 个数 <span class="math inline">\(x_1\lt x_2\lt \dots\lt x_m\)</span> ，那么，在第 <span class="math inline">\(n+1\)</span> 天，只会新创造出 <span class="math inline">\(m+1\)</span> 个数： <span class="math display">\[
+\{|x_1\}\\
+\{x_1|x_2\}\\
+\dots\\
+\{x_{m-1}|x_m\}\\
+\{x_m|\}
+\]</span> 要如何证明这个结论呢？首先，对于 <span class="math inline">\(\{x_{i-1}|x_{i+1}\}\)</span> ，根据定理 0，有 <span class="math inline">\(x_i=\{x_{i-1},x_i^L|x_{i+1},x_i^R\}\)</span> 且 <span class="math inline">\(\{x_{i-1}|x_{i+1}\}=\{x_{i-1},x_i^L|x_{i+1},x_i^R\}\)</span> ，根据传递性 <span class="math inline">\(x_i=\{x_{i-1}|x_{i+1}\}\)</span> 。</p>
+<p>而对于 <span class="math inline">\(\{x_{i-1}|x_{j+1}\},i\lt j\)</span> 这样的数呢？它等于 <span class="math inline">\(x_i\)</span> 到 <span class="math inline">\(x_j\)</span> 中最早出生的数。无论如何，我们都可以通过定理 0 来证明这个。若有多个最早出生的数，这说明这几个数相等，这是不可能的。此时我们可以得到下面这个定理。</p>
+<blockquote>
+<p>定理 1：若 <span class="math inline">\(x=\{x^L|x^R\}\)</span> ，且 <span class="math inline">\(y\)</span> 是满足 <span class="math inline">\(x^L\lt y\lt x^R\)</span> 的数中最早出生的数，那么 <span class="math inline">\(x=y\)</span> 。</p>
+</blockquote>
+<p>故，在前 <span class="math inline">\(n\)</span> 天总共出生了 <span class="math inline">\(2^n-1\)</span> 个数。</p>
+<p>回到前面的问题，我们如何用有理数表示第 3 天之后出生的数呢？</p>
+<p>在前 2 天，我们得到了 <span class="math inline">\(-1,0,1\)</span> 三个数，那么第 3 天会得到 4 个新的数 <span class="math inline">\(\{|-1\},\{-1|0\},\{0|1\},\{1|\}\)</span> ，我们发现，<span class="math inline">\(1+1=\{0+1|\}=\{1|\}\)</span> ，因此 <span class="math inline">\(\{1|\}=2\)</span> ，同理 <span class="math inline">\(\{|-1\}=-2\)</span> 。</p>
+<p>那么，假设我们已经证明了第 <span class="math inline">\(k\)</span> 天生成的最大的数 <span class="math inline">\(x\)</span> 以及第 <span class="math inline">\(k+1\)</span> 生成最大的数 <span class="math inline">\(y=\{x|\}\)</span> 满足 <span class="math inline">\(y=x+1\)</span> ，那么对于第 <span class="math inline">\(k+2\)</span> 天生成的最大的数 <span class="math inline">\(\{y|\}\)</span> ，有 <span class="math inline">\(y+1=\{y,x+1|\}=\{y|\}\)</span> 。</p>
+<p>因此，令第 <span class="math inline">\(n+1\)</span> 天生成的最大的数是有理数 <span class="math inline">\(n\)</span> 是合理的，最小的数为 <span class="math inline">\(-n\)</span> 同理。</p>
+<p>那么对于 <span class="math inline">\(\{x_i|x_{i+1}\}\)</span> 呢？先看看 <span class="math inline">\(\{0|1\}\)</span> ，令 <span class="math inline">\(b=\{0|1\}\)</span> 则有 <span class="math inline">\(b+b=\{b|b+1\}\)</span> ，根据定理 1，我们可以发现 <span class="math inline">\(b+b=1\)</span> ，因此 <span class="math inline">\(b=\frac{1}{2}\)</span> 是合理的。</p>
+<h3 id="回到游戏">回到游戏</h3>
+<p>可以发现，一个超现实数和一个 Blue-Red Hackenbush 的图是类似的：构造方法是类似的，比较符号以及 <span class="math inline">\(x+y\)</span> 和 <span class="math inline">\(-x\)</span> 也都是类似的。</p>
+<p>##Blue-Red-Green Hackenbush</p>
+<p>待更</p>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Hackenbush" class="uri">https://en.wikipedia.org/wiki/Hackenbush</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/John_Horton_Conway" class="uri">https://en.wikipedia.org/wiki/John_Horton_Conway</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Surreal_number" class="uri">https://en.wikipedia.org/wiki/Surreal_number</a></li>
+<li><a href="/uploads/comb.pdf">Game Theory</a>: Thomas S. Ferguson</li>
+<li><a href="/uploads/hackenbush.pdf">A Short Guide to Hackenbush</a>: Padraic Bartlett</li>
+<li><a target="_blank" rel="noopener" href="http://people.math.sc.edu/lu/teaching/2017spring_576/note4.pdf" class="uri">http://people.math.sc.edu/lu/teaching/2017spring_576/note4.pdf</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.cs.cmu.edu/afs/cs/academic/class/15859-f01/www/notes/hack.html" class="uri">http://www.cs.cmu.edu/afs/cs/academic/class/15859-f01/www/notes/hack.html</a></li>
+<li>《浅谈如何解决不平等博弈问题》方展鹏</li>
+<li>http://www.matrix67.com/blog/archives/6333</li>
+<li><a target="_blank" rel="noopener" href="https://www.tondering.dk/download/sur16.pdf">Surreal Numbers – An Introduction</a></li>
+<li>On Numbers and Games: J. H. Conway</li>
+<li>Winning ways for your mathematical plays: Elwyn R. Berlekamp, John H. Conway, Richard K. Guy</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Game-Theory/" rel="tag"># Game Theory</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/11/08/%E4%BB%8E-nim-%E5%92%8C%E5%88%B0-nim-%E7%A7%AF/" rel="prev" title="从 nim 和到 nim 积">
+      <i class="fa fa-chevron-left"></i> 从 nim 和到 nim 积
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#hackenbush"><span class="nav-number">1.</span> <span class="nav-text">Hackenbush</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#green-hackenbush"><span class="nav-number">1.1.</span> <span class="nav-text">Green Hackenbush</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%93%BE"><span class="nav-number">1.1.1.</span> <span class="nav-text">链</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%91"><span class="nav-number">1.1.2.</span> <span class="nav-text">树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE"><span class="nav-number">1.1.3.</span> <span class="nav-text">图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#blue-red-hackenbush"><span class="nav-number">1.2.</span> <span class="nav-text">Blue-Red Hackenbush</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#surreal-number"><span class="nav-number">1.2.1.</span> <span class="nav-text">Surreal Number</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9E%84%E9%80%A0"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">构造</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%A6%E5%AE%9A"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">约定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">定义</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-xge-yxle-y"><span class="nav-number">1.2.1.3.1.</span> <span class="nav-text">定义 \(x\ge y,x\le y\) 。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-xyxyxy"><span class="nav-number">1.2.1.3.2.</span> <span class="nav-text">定义 \(x&#x3D;y,x&gt;y,x&lt;y\) 。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-xy"><span class="nav-number">1.2.1.3.3.</span> <span class="nav-text">定义 \(x+y\) 。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89--x"><span class="nav-number">1.2.1.3.4.</span> <span class="nav-text">定义 \(-x\) 。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-xy-1"><span class="nav-number">1.2.1.3.5.</span> <span class="nav-text">定义 \(xy\) 。</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8%E6%9C%89%E7%90%86%E6%95%B0%E6%9D%A5%E8%A1%A8%E7%A4%BA%E8%B6%85%E7%8E%B0%E5%AE%9E%E6%95%B0"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">用有理数来表示超现实数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E5%AE%9A%E7%90%86"><span class="nav-number">1.2.1.5.</span> <span class="nav-text">一些定理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%8A%A0%E6%B3%95%E5%92%8C--x"><span class="nav-number">1.2.1.6.</span> <span class="nav-text">关于加法和 \(-x\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E4%B9%98%E6%B3%95%E5%92%8C%E9%80%86%E5%85%83"><span class="nav-number">1.2.1.7.</span> <span class="nav-text">关于乘法和逆元</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8%E6%9C%89%E7%90%86%E6%95%B0%E6%9D%A5%E8%A1%A8%E7%A4%BA%E8%B6%85%E7%8E%B0%E5%AE%9E%E6%95%B0-1"><span class="nav-number">1.2.1.8.</span> <span class="nav-text">用有理数来表示超现实数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9E%E5%88%B0%E6%B8%B8%E6%88%8F"><span class="nav-number">1.2.2.</span> <span class="nav-text">回到游戏</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">1.3.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="chitanda"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">chitanda</p>
+  <div class="site-description" itemprop="description">随缘写，待更就是咕了</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hiaatcnd" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hiaatcnd" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:immortalhx2@gmail.com" title="E-Mail → mailto:immortalhx2@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">chitanda</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'R1oXB3H3fuBdOim5r17oSvrk-gzGzoHsz',
+      appKey     : 'Fy44Vr8nflccguqMkcoI9QW0',
+      placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

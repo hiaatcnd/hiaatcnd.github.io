@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hiaatcnd.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"9DY0ZVLOEK","apiKey":"cceb124574a128f58b19be198ddaf1cd","indexName":"chitandablog","hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="三角剖分 对于二维平面上一个点集 \(V\) ，设其凸包为 \(CH(V)\) ，构造一个边集 \(E\) ，那么点集 \(V\) 的三角剖分 \(T(V)&#x3D;G&#x3D;(V,E)\)满足以下条件：  是一个平面图，即除了端点，所有边之间没有其他交点。 该平面图的任意一个面都是三角面。 \(CH(V)\) 的边都在 \(E\) 中  ##Delaunay 三角剖分 对于一个三角剖分 \(T">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Delaunay 三角剖分">
+<meta property="og:url" content="https://hiaatcnd.github.io/2018/04/26/Delaunay%E4%B8%89%E8%A7%92%E5%89%96%E5%88%86%E6%9E%84%E9%80%A0Voronoi%E5%9B%BE/index.html">
+<meta property="og:site_name" content="chitanda&#39;s blog">
+<meta property="og:description" content="三角剖分 对于二维平面上一个点集 \(V\) ，设其凸包为 \(CH(V)\) ，构造一个边集 \(E\) ，那么点集 \(V\) 的三角剖分 \(T(V)&#x3D;G&#x3D;(V,E)\)满足以下条件：  是一个平面图，即除了端点，所有边之间没有其他交点。 该平面图的任意一个面都是三角面。 \(CH(V)\) 的边都在 \(E\) 中  ##Delaunay 三角剖分 对于一个三角剖分 \(T">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-04-26T09:41:33.000Z">
+<meta property="article:modified_time" content="2019-11-02T08:29:01.567Z">
+<meta property="article:author" content="chitanda">
+<meta property="article:tag" content="Geometry">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://hiaatcnd.github.io/2018/04/26/Delaunay%E4%B8%89%E8%A7%92%E5%89%96%E5%88%86%E6%9E%84%E9%80%A0Voronoi%E5%9B%BE/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Delaunay 三角剖分 | chitanda's blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?cc5080b5a8e7b76ad7babd2be384450e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">chitanda's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">吃蛋挞的咸鱼博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hiaatcnd.github.io/2018/04/26/Delaunay%E4%B8%89%E8%A7%92%E5%89%96%E5%88%86%E6%9E%84%E9%80%A0Voronoi%E5%9B%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+      <meta itemprop="name" content="chitanda">
+      <meta itemprop="description" content="随缘写，待更就是咕了">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chitanda's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Delaunay 三角剖分
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-04-26 17:41:33" itemprop="dateCreated datePublished" datetime="2018-04-26T17:41:33+08:00">2018-04-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-02 16:29:01" itemprop="dateModified" datetime="2019-11-02T16:29:01+08:00">2019-11-02</time>
+              </span>
+
+          
+            <span id="/2018/04/26/Delaunay%E4%B8%89%E8%A7%92%E5%89%96%E5%88%86%E6%9E%84%E9%80%A0Voronoi%E5%9B%BE/" class="post-meta-item leancloud_visitors" data-flag-title="Delaunay 三角剖分" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2018/04/26/Delaunay%E4%B8%89%E8%A7%92%E5%89%96%E5%88%86%E6%9E%84%E9%80%A0Voronoi%E5%9B%BE/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018/04/26/Delaunay%E4%B8%89%E8%A7%92%E5%89%96%E5%88%86%E6%9E%84%E9%80%A0Voronoi%E5%9B%BE/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="三角剖分">三角剖分</h2>
+<p>对于二维平面上一个点集 <span class="math inline">\(V\)</span> ，设其凸包为 <span class="math inline">\(CH(V)\)</span> ，构造一个边集 <span class="math inline">\(E\)</span> ，那么点集 <span class="math inline">\(V\)</span> 的三角剖分 <span class="math inline">\(T(V)=G=(V,E)\)</span>满足以下条件：</p>
+<ul>
+<li>是一个平面图，即除了端点，所有边之间没有其他交点。</li>
+<li>该平面图的任意一个面都是三角面。</li>
+<li><span class="math inline">\(CH(V)\)</span> 的边都在 <span class="math inline">\(E\)</span> 中</li>
+</ul>
+<p>##Delaunay 三角剖分</p>
+<p>对于一个三角剖分 <span class="math inline">\(T\)</span> ，若对于其中任意一个三角面，其外接圆内部不包含除三角面端点外 <span class="math inline">\(V\)</span> 中其他点，则称之为 Delaunay 三角剖分，简称 <span class="math inline">\(DT\)</span> 。下文中我们所说的三角剖分都指 Delaunay 三角剖分。</p>
+<span id="more"></span>
+<h2 id="分治法求-dt">分治法求 DT</h2>
+<p>考虑若有两个点集 <span class="math inline">\(V_1\)</span> 和 <span class="math inline">\(V_2\)</span> ，满足 <span class="math inline">\(V_1\)</span> 的凸包 <span class="math inline">\(CH_1\)</span> 和 <span class="math inline">\(V_2\)</span> 的凸包 <span class="math inline">\(CH_2\)</span> 没有交点，设分别在左侧和右侧，若我们已经得到了它们的三角剖分 <span class="math inline">\(DT_1\)</span> 和 <span class="math inline">\(DT_2\)</span> ，我们应该怎样求出点集 <span class="math inline">\(V=V_1\cup V_2\)</span> 的三角剖分 <span class="math inline">\(DT\)</span> ？</p>
+<p>首先找到 <span class="math inline">\(CH_1\)</span> 和 <span class="math inline">\(CH_2\)</span> 的下公切线，这显然是 <span class="math inline">\(V\)</span> 的凸包 <span class="math inline">\(CH\)</span> 中的一条边，所以它必然在 <span class="math inline">\(DT\)</span> 中，找的方法很简单，任选一个 <span class="math inline">\(V_1\)</span> 中的点 <span class="math inline">\(P_1\)</span> 和 <span class="math inline">\(V_2\)</span> 中的点 <span class="math inline">\(P_2\)</span> ，枚举 <span class="math inline">\(DT_1\)</span> 中与 <span class="math inline">\(P_1\)</span> 中相连的点，若在 <span class="math inline">\(P_1P_2\)</span> 的右侧则更新 <span class="math inline">\(P_1\)</span> ，<span class="math inline">\(P_2\)</span> 同理。这样复杂度是线性的。</p>
+<p>然后我们需要从下往上慢慢加边，设当前的 <span class="math inline">\(Base\)</span> 边所连的左右两个点是 <span class="math inline">\(P_1\)</span> 和 <span class="math inline">\(P_2\)</span> ，<span class="math inline">\(Base\)</span> 边初始是上面求的公切线。我们需要找到 <span class="math inline">\(P_1\)</span> 和 <span class="math inline">\(P_2\)</span> 所连的点中，在 <span class="math inline">\(P_1P_2\)</span> 上方（即向量左侧）且与 <span class="math inline">\(P_1,P_2\)</span> 的外接圆不包含其他点的那个点。</p>
+<p>注意到一个事实，固定两个点 <span class="math inline">\(A\)</span> 和 <span class="math inline">\(B\)</span> ，对于任意两个不与 <span class="math inline">\(AB\)</span> 共线且在 <span class="math inline">\(AB\)</span> 同侧的点 <span class="math inline">\(C\)</span> 和 <span class="math inline">\(D\)</span> ，则必有三角形 <span class="math inline">\(ABC\)</span> 外接圆包含 <span class="math inline">\(D\)</span> <strong>或</strong>三角形 <span class="math inline">\(ABD\)</span> 外接圆包含 <span class="math inline">\(C\)</span> 。定义 <span class="math inline">\(C\)</span> 小于等于 <span class="math inline">\(D\)</span> 为 <span class="math inline">\(ABC\)</span> 的外接圆包含 <span class="math inline">\(D\)</span> ，<span class="math inline">\(C\)</span> 等于 <span class="math inline">\(D\)</span> 为 <span class="math inline">\(A,B,C,D\)</span> 四点共圆，那么必然有 <span class="math inline">\(C\le D\)</span> 或 <span class="math inline">\(D\le C\)</span> 。且注意到若 <span class="math inline">\(C\le D\)</span> ，则在 <span class="math inline">\(C,D\)</span> 所在 <span class="math inline">\(AB\)</span> 这一侧，<span class="math inline">\(ABC\)</span> 外接圆包含 <span class="math inline">\(ABD\)</span> 外接圆，故若有 <span class="math inline">\(C\le D,D\le E\)</span> ，必有 <span class="math inline">\(C\le E\)</span> 。那么，这个关系显然是一个全序关系。（注意：这里的包含指在内部或边界上）</p>
+<p>所以，我们只需要枚举 <span class="math inline">\(P_1\)</span> 和 <span class="math inline">\(P_2\)</span> 所连的所有边，对于在 <span class="math inline">\(\overrightarrow{P_1P_2}\)</span> 左侧的所有点，找到最大的那个点即可。设这个点为 <span class="math inline">\(Q\)</span> ，若其在左侧，则需要连边 <span class="math inline">\(QP_2\)</span> ，并且更新 <span class="math inline">\(Base\)</span> 边，但这会带来一个问题，新加的这条边可能和原来的边相交，但可能相交的边只可能是原来就与 <span class="math inline">\(P_1\)</span> 相连的边，枚举删除一下即可，若 <span class="math inline">\(Q\)</span> 在右侧同理。这一部分复杂度是均摊线性的。</p>
+<p>我们将所有点排序，用分治的思想来不断合并 <span class="math inline">\(DT\)</span> ，总复杂度为 <span class="math inline">\(O(n\log n)\)</span>。</p>
+<h2 id="代码解读">代码解读</h2>
+<p>首先要说明一下存边的方式，由于有删边操作，所以最好用链表来维护。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Edge</span>&#123;</span></span><br><span class="line">	<span class="keyword">int</span> v, id;</span><br><span class="line">	list&lt;Edge&gt;::iterator mate;</span><br><span class="line">	<span class="built_in">Edge</span>(<span class="keyword">int</span> v = <span class="number">0</span>) : <span class="built_in">v</span>(v) &#123; id = <span class="number">-1</span>; &#125;;</span><br><span class="line">&#125;;</span><br><span class="line">list&lt;Edge&gt; E[maxn];</span><br></pre></td></tr></table></figure>
+<p>其中 <code>mate</code> 指向这条边的另一半。</p>
+<p>连边操作为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addEdge</span><span class="params">(<span class="keyword">int</span> u, <span class="keyword">int</span> v)</span></span>&#123;</span><br><span class="line">	E[u].<span class="built_in">push_front</span>(v);</span><br><span class="line">	E[v].<span class="built_in">push_front</span>(u);</span><br><span class="line">	E[u].<span class="built_in">begin</span>()-&gt;mate = E[v].<span class="built_in">begin</span>();</span><br><span class="line">	E[v].<span class="built_in">begin</span>()-&gt;mate = E[u].<span class="built_in">begin</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分治主体：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">work</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> r)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(l + <span class="number">1</span> &gt;= r)&#123;</span><br><span class="line">		<span class="keyword">if</span>(l + <span class="number">1</span> == r) <span class="built_in">addEdge</span>(l, r);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> mid = (l + r) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">	<span class="built_in">work</span>(l, mid);</span><br><span class="line">	<span class="built_in">work</span>(mid + <span class="number">1</span>, r);</span><br></pre></td></tr></table></figure>
+<p>找两个凸包的下公切线：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> flag = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> i = l, j = r;</span><br><span class="line"><span class="keyword">while</span>(!flag)&#123;</span><br><span class="line">	flag = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> it = E[i].<span class="built_in">begin</span>(); it != E[i].<span class="built_in">end</span>(); ++it)&#123;</span><br><span class="line">		<span class="keyword">int</span> tmp = <span class="built_in">OnLeft</span>(P[j], P[i], P[it-&gt;v]);</span><br><span class="line">		<span class="keyword">if</span>(tmp &gt; <span class="number">0</span> || (tmp == <span class="number">0</span> &amp;&amp; (P[i] - P[j]).<span class="built_in">len</span>() &gt; (P[it-&gt;v] - P[j]).<span class="built_in">len</span>()))&#123;</span><br><span class="line">			flag = <span class="number">0</span>;</span><br><span class="line">			i = it-&gt;v;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> it = E[j].<span class="built_in">begin</span>(); it != E[j].<span class="built_in">end</span>(); ++it)&#123;</span><br><span class="line">		<span class="keyword">int</span> tmp = <span class="built_in">OnLeft</span>(P[i], P[j], P[it-&gt;v]);</span><br><span class="line">		<span class="keyword">if</span>(tmp &lt; <span class="number">0</span> || (tmp == <span class="number">0</span> &amp;&amp; (P[j] - P[i]).<span class="built_in">len</span>() &gt; (P[it-&gt;v] - P[i]).<span class="built_in">len</span>()))&#123;</span><br><span class="line">			flag = <span class="number">0</span>;</span><br><span class="line">			j = it-&gt;v;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>连边和删边：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">	<span class="built_in">addEdge</span>(i, j);</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">		<span class="keyword">int</span> best = <span class="number">-1</span>, dir = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">auto</span> it = E[i].<span class="built_in">begin</span>(); it != E[i].<span class="built_in">end</span>(); ++it)&#123;</span><br><span class="line">			<span class="keyword">if</span>(<span class="built_in">OnLeft</span>(P[i], P[j], P[it-&gt;v]) &gt; <span class="number">0</span> &amp;&amp; (!dir || <span class="built_in">InCircle</span>(P[i], P[j], P[best], P[it-&gt;v])))</span><br><span class="line">				best = it-&gt;v, dir = <span class="number">-1</span>;			</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">auto</span> it = E[j].<span class="built_in">begin</span>(); it != E[j].<span class="built_in">end</span>(); ++it)&#123;</span><br><span class="line">			<span class="keyword">if</span>(<span class="built_in">OnLeft</span>(P[i], P[j], P[it-&gt;v]) &gt; <span class="number">0</span> &amp;&amp; (!dir || <span class="built_in">InCircle</span>(P[i], P[j], P[best], P[it-&gt;v])))</span><br><span class="line">				best = it-&gt;v, dir = <span class="number">1</span>;			</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(!dir) <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">if</span>(dir == <span class="number">-1</span>)&#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">auto</span> it = E[i].<span class="built_in">begin</span>(); it != E[i].<span class="built_in">end</span>(); )</span><br><span class="line">				<span class="keyword">if</span>(<span class="built_in">SegmentProperIntersection</span>(P[i], P[it-&gt;v], P[j], P[best]))&#123;</span><br><span class="line">					<span class="keyword">auto</span> _it = it; ++it;</span><br><span class="line">					E[_it-&gt;v].<span class="built_in">erase</span>(_it-&gt;mate);</span><br><span class="line">					E[i].<span class="built_in">erase</span>(_it);</span><br><span class="line">				&#125;<span class="keyword">else</span> ++it;</span><br><span class="line">			i = best;</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">auto</span> it = E[j].<span class="built_in">begin</span>(); it != E[j].<span class="built_in">end</span>(); )</span><br><span class="line">				<span class="keyword">if</span>(<span class="built_in">SegmentProperIntersection</span>(P[i], P[best], P[j], P[it-&gt;v]))&#123;</span><br><span class="line">					<span class="keyword">auto</span> _it = it; ++it;</span><br><span class="line">					E[_it-&gt;v].<span class="built_in">erase</span>(_it-&gt;mate);</span><br><span class="line">					E[j].<span class="built_in">erase</span>(_it);</span><br><span class="line">				&#125;<span class="keyword">else</span> ++it;</span><br><span class="line">			j = best;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">addEdge</span>(i, j);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来是一些计算几何部分细节的说明。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> eps = <span class="number">1e-10</span>;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">dcmp</span><span class="params">(<span class="keyword">double</span> x)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> (x &gt; eps) - (x &lt; -eps);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Point</span>&#123;</span></span><br><span class="line">	<span class="keyword">double</span> x, y;</span><br><span class="line">	<span class="built_in">Point</span>(<span class="keyword">double</span> x = <span class="number">0</span>, <span class="keyword">double</span> y = <span class="number">0</span>)	: <span class="built_in">x</span>(x), <span class="built_in">y</span>(y) &#123;&#125;</span><br><span class="line">	<span class="keyword">bool</span> <span class="keyword">operator</span> &lt; (<span class="keyword">const</span> Point&amp; R) <span class="keyword">const</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">dcmp</span>(x - R.x) == <span class="number">0</span> ? <span class="built_in">dcmp</span>(y - R.y) &lt; <span class="number">0</span> : <span class="built_in">dcmp</span>(x - R.x) &lt; <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">bool</span> <span class="keyword">operator</span> == (<span class="keyword">const</span> Point&amp; R) <span class="keyword">const</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">dcmp</span>(x - R.x) == <span class="number">0</span> &amp;&amp; <span class="built_in">dcmp</span>(y - R.y) == <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	Point <span class="keyword">operator</span> + (<span class="keyword">const</span> Point&amp; R) <span class="keyword">const</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">Point</span>(x + R.x , y + R.y);</span><br><span class="line">	&#125;</span><br><span class="line">	Point <span class="keyword">operator</span> - (<span class="keyword">const</span> Point&amp; R) <span class="keyword">const</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">Point</span>(x - R.x , y - R.y);</span><br><span class="line">	&#125;</span><br><span class="line">	Point <span class="keyword">operator</span> * (<span class="keyword">const</span> <span class="keyword">double</span>&amp; R) <span class="keyword">const</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">Point</span>(x * R , y * R);</span><br><span class="line">	&#125;</span><br><span class="line">	Point <span class="keyword">operator</span> / (<span class="keyword">const</span> <span class="keyword">double</span>&amp; R) <span class="keyword">const</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">Point</span>(x / R , y / R);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">double</span> <span class="keyword">operator</span> ^ (<span class="keyword">const</span> Point&amp; R) <span class="keyword">const</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> x * R.y - y * R.x;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">double</span> <span class="keyword">operator</span> % (<span class="keyword">const</span> Point&amp; R) <span class="keyword">const</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> x * R.x + y * R.y;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">double</span> <span class="title">len</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">sqrt</span>(*<span class="keyword">this</span> % *<span class="keyword">this</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">double</span> <span class="title">angle</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">atan2</span>(y, x);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">output</span><span class="params">()</span> </span>&#123; <span class="built_in">printf</span>(<span class="string">&quot;%.10f %.10f\n&quot;</span>, x, y); &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><code>OnLeft</code> 用来判断点 <span class="math inline">\(C\)</span> 在 <span class="math inline">\(AB\)</span> 的哪一侧</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">OnLeft</span><span class="params">(Point A, Point B, Point C)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">dcmp</span>((B - A) ^ (C - A));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>InCircle</code> 判断点 <span class="math inline">\(P\)</span> 是否在 <span class="math inline">\(ABC\)</span> 外接圆严格内部</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">det3</span><span class="params">(vector&lt;<span class="keyword">double</span>&gt; p)</span></span>&#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> p(x, y) p[(x) * 3 + y]</span></span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">p</span>(<span class="number">0</span>, <span class="number">0</span>) * <span class="built_in">p</span>(<span class="number">1</span>, <span class="number">1</span>) * <span class="built_in">p</span>(<span class="number">2</span>, <span class="number">2</span>) + <span class="built_in">p</span>(<span class="number">0</span>, <span class="number">1</span>) * <span class="built_in">p</span>(<span class="number">1</span>, <span class="number">2</span>) * <span class="built_in">p</span>(<span class="number">2</span>, <span class="number">0</span>) + <span class="built_in">p</span>(<span class="number">0</span>, <span class="number">2</span>) * <span class="built_in">p</span>(<span class="number">1</span>, <span class="number">0</span>) * <span class="built_in">p</span>(<span class="number">2</span>, <span class="number">1</span>)</span><br><span class="line">		- <span class="built_in">p</span>(<span class="number">0</span>, <span class="number">2</span>) * <span class="built_in">p</span>(<span class="number">1</span>, <span class="number">1</span>) * <span class="built_in">p</span>(<span class="number">2</span>, <span class="number">0</span>) - <span class="built_in">p</span>(<span class="number">0</span>, <span class="number">1</span>) * <span class="built_in">p</span>(<span class="number">1</span>, <span class="number">0</span>) * <span class="built_in">p</span>(<span class="number">2</span>, <span class="number">2</span>) - <span class="built_in">p</span>(<span class="number">0</span>, <span class="number">0</span>) * <span class="built_in">p</span>(<span class="number">1</span>, <span class="number">2</span>) * <span class="built_in">p</span>(<span class="number">2</span>, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Point <span class="title">GetCircleCenter</span><span class="params">(Point A, Point B, Point C)</span></span>&#123;</span><br><span class="line">	<span class="keyword">auto</span> met1 = vector&lt;<span class="keyword">double</span>&gt;&#123;A % A, A.y, <span class="number">1.</span>, B % B, B.y, <span class="number">1.</span>, C % C, C.y, <span class="number">1.</span>&#125;;</span><br><span class="line">	<span class="keyword">auto</span> met2 = vector&lt;<span class="keyword">double</span>&gt;&#123;A.x, A % A, <span class="number">1.</span>, B.x, B % B, <span class="number">1.</span>, C.x, C % C, <span class="number">1.</span>&#125;;</span><br><span class="line">	<span class="keyword">auto</span> met3 = vector&lt;<span class="keyword">double</span>&gt;&#123;A.x, A.y, <span class="number">1.</span>, B.x, B.y, <span class="number">1.</span>, C.x, C.y, <span class="number">1.</span>&#125;;</span><br><span class="line">	<span class="keyword">double</span> tmp = <span class="built_in">det3</span>(met3) * <span class="number">2</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">Point</span>(<span class="built_in">det3</span>(met1) / tmp, <span class="built_in">det3</span>(met2) / tmp);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">InCircle</span><span class="params">(Point A, Point B, Point C, Point P)</span></span>&#123;</span><br><span class="line">	Point O = <span class="built_in">GetCircleCenter</span>(A, B, C);</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">dcmp</span>((A - O).<span class="built_in">len</span>() - (P - O).<span class="built_in">len</span>()) &gt; <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>SegmentProperIntersection</code> 判断线段严格相交</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">SegmentProperIntersection</span><span class="params">(Point a1 , Point a2 , Point b1 , Point b2)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">double</span> c1 = (a2 - a1) ^ (b1 - a1);</span><br><span class="line">	<span class="keyword">double</span> c2 = (a2 - a1) ^ (b2 - a1);</span><br><span class="line">	<span class="keyword">if</span>(<span class="built_in">dcmp</span>(c1) == <span class="number">0</span> &amp;&amp; <span class="built_in">dcmp</span>(c2) == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">double</span> c3 = (b2 - b1) ^ (a1 - b1);</span><br><span class="line">	<span class="keyword">double</span> c4 = (b2 - b1) ^ (a2 - b1);</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">dcmp</span>(c1) * <span class="built_in">dcmp</span>(c2) &lt; <span class="number">0</span> &amp;&amp; <span class="built_in">dcmp</span>(c3) * <span class="built_in">dcmp</span>(c4) &lt; <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="结语">结语</h2>
+<p>想好怎么实现之后，代码写起来其实并不复杂，整个过程也没有太多的细节。</p>
+<p>在求出 <span class="math inline">\(DT\)</span> 之后，对偶一下即可得到维诺图（Voronoi Diagram）。若想得到每个三角面，使用最左转线法即可，具体可参考平面图转对偶图，在求维诺图的过程中也需要用到。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Geometry/" rel="tag"># Geometry</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/02/13/%E7%BB%84%E5%90%88%E6%B8%B8%E6%88%8F/" rel="prev" title="组合游戏">
+      <i class="fa fa-chevron-left"></i> 组合游戏
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/11/04/%E5%8D%9A%E5%BC%88%E8%AE%BA/" rel="next" title="博弈论">
+      博弈论 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E8%A7%92%E5%89%96%E5%88%86"><span class="nav-number">1.</span> <span class="nav-text">三角剖分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%B2%BB%E6%B3%95%E6%B1%82-dt"><span class="nav-number">2.</span> <span class="nav-text">分治法求 DT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB"><span class="nav-number">3.</span> <span class="nav-text">代码解读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">4.</span> <span class="nav-text">结语</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="chitanda"
+      src="/uploads/avatar.jpg">
+  <p class="site-author-name" itemprop="name">chitanda</p>
+  <div class="site-description" itemprop="description">随缘写，待更就是咕了</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hiaatcnd" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hiaatcnd" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:immortalhx2@gmail.com" title="E-Mail → mailto:immortalhx2@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">chitanda</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'R1oXB3H3fuBdOim5r17oSvrk-gzGzoHsz',
+      appKey     : 'Fy44Vr8nflccguqMkcoI9QW0',
+      placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
