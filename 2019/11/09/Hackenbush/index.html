@@ -34,8 +34,10 @@
 <meta property="og:image" content="https://hiaatcnd.github.io/uploads/hackenbush4.png">
 <meta property="og:image" content="https://hiaatcnd.github.io/uploads/hackenbush5.png">
 <meta property="og:image" content="https://hiaatcnd.github.io/uploads/hackenbush6.png">
+<meta property="og:image" content="https://hiaatcnd.github.io/uploads/surreal_number_tree.png">
+<meta property="og:image" content="https://hiaatcnd.github.io/uploads/br_hakbenbush_tree.png">
 <meta property="article:published_time" content="2019-11-09T08:32:01.000Z">
-<meta property="article:modified_time" content="2021-08-22T17:56:29.067Z">
+<meta property="article:modified_time" content="2021-09-03T19:32:12.121Z">
 <meta property="article:author" content="chitanda">
 <meta property="article:tag" content="Game Theory">
 <meta name="twitter:card" content="summary">
@@ -209,7 +211,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-08-23 01:56:29" itemprop="dateModified" datetime="2021-08-23T01:56:29+08:00">2021-08-23</time>
+                <time title="修改时间：2021-09-04 03:32:12" itemprop="dateModified" datetime="2021-09-04T03:32:12+08:00">2021-09-04</time>
               </span>
 
           
@@ -535,13 +537,23 @@ y+x&amp;=\{y+x^L,y^L+x|y+x^R,y^R+x\}
 &amp;=x_i+x_{i+1}
 \end{aligned}
 \]</span> 那么，有 <span class="math inline">\(\{x_i|x_{i+1}\}=\frac{x_i+x_{i+1}}{2}\)</span> 。</p>
-<p>再来说乘法。</p>
 <h3 id="回到游戏">回到游戏</h3>
 <p>可以发现，一个超现实数和一个 Blue-Red Hackenbush 的图是一致的：构造方法是一致的，比较符号以及 <span class="math inline">\(x+y\)</span> 和 <span class="math inline">\(-x\)</span>​​ 的定义也都是一致的。因此，每个局面都可以用一个有理数来表示。</p>
 <p>那么如何计算一个局面的值呢？</p>
 <h4 id="链-1">链</h4>
 <p>先考虑只有一种颜色的链，根据定义很显然边长为 <span class="math inline">\(x\)</span> 的蓝链值为 <span class="math inline">\(x\)</span> ，边长为 <span class="math inline">\(x\)</span> 的红链值为 <span class="math inline">\(-x\)</span>​​ 。</p>
-<p>对于无限长的蓝链，值为无穷，暂且设为 <span class="math inline">\(\omega\)</span>​ ，无穷长的红链值为 <span class="math inline">\(-\omega\)</span> 。​</p>
+<p>实际上，一条链的值和上面超现实数的生成方法是等价的，长为 <span class="math inline">\(n\)</span> 的值为第 <span class="math inline">\(n+1\)</span>​ 天生成的某个数，参考下图一目了然：</p>
+<figure>
+<img src="/uploads/surreal_number_tree.png" alt="树" /><figcaption aria-hidden="true">树</figcaption>
+</figure>
+<p>根到点的路径构成了一条链，而其祖先的任意点，都是游戏下一步能到达的状态。</p>
+<p>计算一条链（即树的某个点）的具体值的方法也很容易，就不做说明了。</p>
+<h4 id="树-1">树</h4>
+<p>和 Green Hackenbush 的方法是类似的，遇到分岔时，以一条链代替所有子树的游戏和，这里不再给出证明，例如：</p>
+<figure>
+<img src="/uploads/br_hakbenbush_tree.png" alt="树" /><figcaption aria-hidden="true">树</figcaption>
+</figure>
+<h4 id="图-1">图</h4>
 <h2 id="blue-red-green-hackenbush">Blue-Red-Green Hackenbush</h2>
 <p>待更</p>
 <h2 id="参考资料">参考资料</h2>
@@ -557,7 +569,8 @@ y+x&amp;=\{y+x^L,y^L+x|y+x^R,y^R+x\}
 <li>http://www.matrix67.com/blog/archives/6333</li>
 <li><a target="_blank" rel="noopener" href="https://www.tondering.dk/download/sur16.pdf">Surreal Numbers – An Introduction</a></li>
 <li>On Numbers and Games: J. H. Conway</li>
-<li>Winning ways for your mathematical plays: Elwyn R. Berlekamp, John H. Conway, Richard K. Guy</li>
+<li><a href="/uploads/Winning%20Ways%20for%20Your%20Mathematical%20Plays%20V1.pdf">Winning ways for your mathematical plays</a>: Elwyn R. Berlekamp, John H. Conway, Richard K. Guy</li>
+<li>Surreal Numbers: D. E. KNUTH</li>
 </ul>
 
     </div>
@@ -640,7 +653,7 @@ y+x&amp;=\{y+x^L,y^L+x|y+x^R,y^R+x\}
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#hackenbush"><span class="nav-number">1.</span> <span class="nav-text">Hackenbush</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#green-hackenbush"><span class="nav-number">1.1.</span> <span class="nav-text">Green Hackenbush</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%93%BE"><span class="nav-number">1.1.1.</span> <span class="nav-text">链</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%91"><span class="nav-number">1.1.2.</span> <span class="nav-text">树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE"><span class="nav-number">1.1.3.</span> <span class="nav-text">图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#blue-red-hackenbush"><span class="nav-number">1.2.</span> <span class="nav-text">Blue-Red Hackenbush</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#surreal-number"><span class="nav-number">1.2.1.</span> <span class="nav-text">Surreal Number</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9E%84%E9%80%A0"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">构造</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%A6%E5%AE%9A"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">约定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">定义</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-xge-yxle-y"><span class="nav-number">1.2.1.3.1.</span> <span class="nav-text">定义 \(x\ge y,x\le y\) 。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-xyxyxy"><span class="nav-number">1.2.1.3.2.</span> <span class="nav-text">定义 \(x&#x3D;y,x&gt;y,x&lt;y\) 。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-xy"><span class="nav-number">1.2.1.3.3.</span> <span class="nav-text">定义 \(x+y\) 。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89--x"><span class="nav-number">1.2.1.3.4.</span> <span class="nav-text">定义 \(-x\) 。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-xy-1"><span class="nav-number">1.2.1.3.5.</span> <span class="nav-text">定义 \(xy\) 。</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8%E6%9C%89%E7%90%86%E6%95%B0%E6%9D%A5%E8%A1%A8%E7%A4%BA%E8%B6%85%E7%8E%B0%E5%AE%9E%E6%95%B0"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">用有理数来表示超现实数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E5%AE%9A%E7%90%86"><span class="nav-number">1.2.1.5.</span> <span class="nav-text">一些定理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%8A%A0%E6%B3%95%E5%92%8C--x"><span class="nav-number">1.2.1.6.</span> <span class="nav-text">关于加法和 \(-x\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E4%B9%98%E6%B3%95%E5%92%8C%E9%80%86%E5%85%83"><span class="nav-number">1.2.1.7.</span> <span class="nav-text">关于乘法和逆元</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8%E6%9C%89%E7%90%86%E6%95%B0%E6%9D%A5%E8%A1%A8%E7%A4%BA%E8%B6%85%E7%8E%B0%E5%AE%9E%E6%95%B0-1"><span class="nav-number">1.2.1.8.</span> <span class="nav-text">用有理数来表示超现实数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9E%E5%88%B0%E6%B8%B8%E6%88%8F"><span class="nav-number">1.2.2.</span> <span class="nav-text">回到游戏</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%93%BE-1"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">链</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#blue-red-green-hackenbush"><span class="nav-number">1.3.</span> <span class="nav-text">Blue-Red-Green Hackenbush</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">1.4.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#hackenbush"><span class="nav-number">1.</span> <span class="nav-text">Hackenbush</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#green-hackenbush"><span class="nav-number">1.1.</span> <span class="nav-text">Green Hackenbush</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%93%BE"><span class="nav-number">1.1.1.</span> <span class="nav-text">链</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%91"><span class="nav-number">1.1.2.</span> <span class="nav-text">树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE"><span class="nav-number">1.1.3.</span> <span class="nav-text">图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#blue-red-hackenbush"><span class="nav-number">1.2.</span> <span class="nav-text">Blue-Red Hackenbush</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#surreal-number"><span class="nav-number">1.2.1.</span> <span class="nav-text">Surreal Number</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9E%84%E9%80%A0"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">构造</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%A6%E5%AE%9A"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">约定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">定义</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-xge-yxle-y"><span class="nav-number">1.2.1.3.1.</span> <span class="nav-text">定义 \(x\ge y,x\le y\) 。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-xyxyxy"><span class="nav-number">1.2.1.3.2.</span> <span class="nav-text">定义 \(x&#x3D;y,x&gt;y,x&lt;y\) 。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-xy"><span class="nav-number">1.2.1.3.3.</span> <span class="nav-text">定义 \(x+y\) 。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89--x"><span class="nav-number">1.2.1.3.4.</span> <span class="nav-text">定义 \(-x\) 。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-xy-1"><span class="nav-number">1.2.1.3.5.</span> <span class="nav-text">定义 \(xy\) 。</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8%E6%9C%89%E7%90%86%E6%95%B0%E6%9D%A5%E8%A1%A8%E7%A4%BA%E8%B6%85%E7%8E%B0%E5%AE%9E%E6%95%B0"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">用有理数来表示超现实数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E5%AE%9A%E7%90%86"><span class="nav-number">1.2.1.5.</span> <span class="nav-text">一些定理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%8A%A0%E6%B3%95%E5%92%8C--x"><span class="nav-number">1.2.1.6.</span> <span class="nav-text">关于加法和 \(-x\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E4%B9%98%E6%B3%95%E5%92%8C%E9%80%86%E5%85%83"><span class="nav-number">1.2.1.7.</span> <span class="nav-text">关于乘法和逆元</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8%E6%9C%89%E7%90%86%E6%95%B0%E6%9D%A5%E8%A1%A8%E7%A4%BA%E8%B6%85%E7%8E%B0%E5%AE%9E%E6%95%B0-1"><span class="nav-number">1.2.1.8.</span> <span class="nav-text">用有理数来表示超现实数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9E%E5%88%B0%E6%B8%B8%E6%88%8F"><span class="nav-number">1.2.2.</span> <span class="nav-text">回到游戏</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%93%BE-1"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">链</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%91-1"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%BE-1"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">图</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#blue-red-green-hackenbush"><span class="nav-number">1.3.</span> <span class="nav-text">Blue-Red-Green Hackenbush</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">1.4.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
